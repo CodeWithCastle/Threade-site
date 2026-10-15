@@ -18,7 +18,7 @@ npm run build                # build/, then scripts/check-build.js (must pass)
 | Variable | What |
 |---|---|
 | `REACT_APP_APP_URL` | The business app (Start free, Sign in, legal pages). Default `https://app.threade.app` |
-| `REACT_APP_SITE_URL` | This website's address, for link previews (`og:image` must be a full address). Set in `.env`: `https://threade.app` |
+| `REACT_APP_SITE_URL` | This website's address, for link previews (`og:image` must be a full address). Set in `.env`: `https://www.threade.app` (the main address; `threade.app` redirects there) |
 | `REACT_APP_SUPABASE_URL`, `REACT_APP_SUPABASE_ANON_KEY` | The waitlist. Same Supabase project as the app; public anon key only. Empty: the form asks people to email team@threade.app |
 
 ## Waitlist
@@ -33,7 +33,7 @@ To remove someone who asks: `delete from site_waitlist where email = 'their@emai
 
 ## Deploy (Vercel)
 
-New project from this repo, framework Create React App, production branch `main`. Set the three variables above. Add the domain (`threade.app`, `www.threade.app`). `vercel.json` sends every page to `index.html` and sets the security headers (no inline scripts allowed).
+New project from this repo, framework Create React App, production branch `main`. Set the three variables above. Domains: `www.threade.app` (main), `threade.app` redirects to it (done 2026-10-15). `vercel.json` sends every page to `index.html` and sets the security headers (no inline scripts allowed).
 
 ## Content
 
