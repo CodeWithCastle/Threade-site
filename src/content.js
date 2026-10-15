@@ -15,11 +15,12 @@ export const TEAM_EMAIL = 'team@threade.app';
 export const SUPPORT_EMAIL = 'support@threade.app';
 export const PILOT_END = '30 November 2026';
 
+// "/#..." so the links also work from /privacy (a bare "#..." would stay on that page).
 export const NAV = [
-  { href: '#features', label: 'Features' },
-  { href: '#how', label: 'How it works' },
-  { href: '#plans', label: 'Plans' },
-  { href: '#faq', label: 'FAQ' },
+  { href: '/#features', label: 'Features' },
+  { href: '/#how', label: 'How it works' },
+  { href: '/#plans', label: 'Plans' },
+  { href: '/#faq', label: 'FAQ' },
 ];
 
 export const HERO = {

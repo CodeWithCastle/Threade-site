@@ -18,6 +18,7 @@ npm run build                # build/, then scripts/check-build.js (must pass)
 | Variable | What |
 |---|---|
 | `REACT_APP_APP_URL` | The business app (Start free, Sign in, legal pages). Default `https://app.threade.app` |
+| `REACT_APP_SITE_URL` | This website's address, for link previews (`og:image` must be a full address). Set in `.env`: `https://threade.app` |
 | `REACT_APP_SUPABASE_URL`, `REACT_APP_SUPABASE_ANON_KEY` | The waitlist. Same Supabase project as the app; public anon key only. Empty: the form asks people to email team@threade.app |
 
 ## Waitlist
