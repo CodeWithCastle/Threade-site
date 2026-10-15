@@ -1,5 +1,5 @@
 // The waitlist form: checks what was typed and sends it to the database function
-// public.join_waitlist (application-threade migration 20261103000000_site_waitlist).
+// public.join_waitlist (application-threade-business migration 20261103000000_site_waitlist).
 import { TEAM_EMAIL } from './content';
 
 const env = (key) => (process.env[key] ?? '').trim();
