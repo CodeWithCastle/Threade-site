@@ -7,6 +7,8 @@ const problems = [];
 const html = fs.readFileSync(path.join(build, 'index.html'), 'utf8');
 if (/<script(?![^>]*\bsrc=)[^>]*>/i.test(html)) problems.push('index.html has an inline script (the CSP forbids it).');
 if (/style="/i.test(html)) problems.push('index.html has an inline style attribute (the CSP forbids it).');
+if (/%REACT_APP_[A-Z_]+%/.test(html)) problems.push('index.html has an unfilled %REACT_APP_...% value (set it in .env or on Vercel).');
+if (!/<meta property="og:image" content="https:\/\/[^"]+"/.test(html)) problems.push('og:image must be a full https address (REACT_APP_SITE_URL).');
 
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]));
 for (const file of walk(build)) {

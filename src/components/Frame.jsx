@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { COUNTRIES, FOOTER, LEGAL, NAV, SIGN_IN_URL, SIGN_UP_URL, SUPPORT_EMAIL, TEAM_EMAIL, WAITLIST } from '../content';
 import { joinWaitlist, validateWaitlist, waitlistReady } from '../waitlist';
 import Mark from './Mark';
@@ -56,8 +56,23 @@ export function Waitlist() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const ready = waitlistReady();
+  const doneRef = useRef(null);
 
-  const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  // The form (and its focused button) is replaced by the message: move focus there so
+  // keyboard and screen reader users are not left at the top of the page.
+  useEffect(() => {
+    if (status.state === 'done') doneRef.current?.focus();
+  }, [status.state]);
+
+  const set = (key) => (e) => {
+    const { value } = e.target;
+    setForm((f) => ({ ...f, [key]: value }));
+    setErrors((found) => {
+      if (!found[key]) return found;
+      const { [key]: _fixed, ...rest } = found;
+      return rest;
+    });
+  };
 
   const submit = async (event) => {
     event.preventDefault();
@@ -95,7 +110,7 @@ export function Waitlist() {
           </p>
         </div>
         {status.state === 'done' ? (
-          <p className="notice notice--ok" role="status">
+          <p className="notice notice--ok" role="status" tabIndex={-1} ref={doneRef}>
             {status.message}
           </p>
         ) : (
