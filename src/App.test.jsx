@@ -5,8 +5,10 @@ import { joinWaitlist, validateWaitlist, FAILED, NOT_CONNECTED } from './waitlis
 import { FEATURES, PLANS } from './content';
 
 const env = { ...process.env };
+const realFetch = global.fetch;
 afterEach(() => {
   process.env = { ...env };
+  global.fetch = realFetch;
   jest.restoreAllMocks();
 });
 
@@ -37,8 +39,8 @@ describe('home page', () => {
     render(<App path="/" />);
     PLANS.forEach((p) => expect(screen.getByRole('heading', { name: p.name, level: 3 })).toBeInTheDocument());
     expect(screen.getAllByText('Price to be announced')).toHaveLength(2);
-    const plans = document.getElementById('plans');
-    expect(plans.textContent).not.toMatch(/₦\d|£\d|\$\d/);
+    const plans = screen.getByRole('region', { name: 'Start free. Grow when you are ready.' });
+    expect(plans).not.toHaveTextContent(/₦\d|£\d|\$\d/);
   });
 
   it('links the official legal documents in the app and the website privacy page', () => {
@@ -62,6 +64,19 @@ describe('waitlist', () => {
     expect(screen.getByRole('button', { name: 'Join the waitlist' })).toBeDisabled();
   });
 
+  it('clears a field’s error as soon as it is changed', async () => {
+    process.env.REACT_APP_SUPABASE_URL = 'https://abc.supabase.co';
+    process.env.REACT_APP_SUPABASE_ANON_KEY = 'k';
+    render(<App path="/" />);
+    await userEvent.click(screen.getByRole('button', { name: 'Join the waitlist' }));
+    expect(screen.getByText('Enter your email.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'true');
+    await userEvent.type(screen.getByLabelText('Email'), 'a');
+    expect(screen.queryByText('Enter your email.')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.getByText('Choose where your business is.')).toBeInTheDocument();
+  });
+
   it('checks the form', () => {
     expect(validateWaitlist({ email: 'nope', country: '' })).toEqual({ email: 'Enter an email like name@example.com.', country: 'Choose where your business is.' });
     expect(validateWaitlist({ email: 'ada@example.com', name: 'x'.repeat(81), country: 'NG' })).toEqual({ name: 'Keep your name under 80 characters.' });
@@ -80,7 +95,9 @@ describe('waitlist', () => {
     await userEvent.type(screen.getByLabelText('Email'), ' ada@example.com ');
     await userEvent.selectOptions(screen.getByLabelText('Where is your business?'), 'NG');
     await userEvent.click(screen.getByRole('button', { name: 'Join the waitlist' }));
-    expect(await screen.findByRole('status')).toHaveTextContent('You are on the list.');
+    const done = await screen.findByRole('status');
+    expect(done).toHaveTextContent('You are on the list.');
+    expect(done).toHaveFocus();
     const [url, init] = fetchImpl.mock.calls[0];
     expect(url).toBe('https://abc.supabase.co/rest/v1/rpc/join_waitlist');
     expect(init.headers.apikey).toBe('public-anon-key');
@@ -108,5 +125,12 @@ describe('website privacy page', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'How this website uses your details' })).toBeInTheDocument();
     expect(screen.getByText(/sets no cookies/)).toBeInTheDocument();
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+  });
+
+  it('keeps the menu links pointing at the home page sections', () => {
+    render(<App path="/privacy" />);
+    const main = screen.getByRole('navigation', { name: 'Main' });
+    expect(within(main).getByRole('link', { name: 'Features' })).toHaveAttribute('href', '/#features');
+    expect(within(main).getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');
   });
 });

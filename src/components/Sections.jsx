@@ -43,7 +43,7 @@ export function Hero() {
             ))}
           </ul>
         </div>
-        <div className="hero__visual" aria-label="Threadé on a laptop and a phone">
+        <div className="hero__visual" role="group" aria-label="Threadé on a laptop and a phone">
           <Laptop image="laptop-40-finance" alt="Finance on a laptop: sales, cash, costs, profit and debts" className="hero__laptop" />
           <Phone image="phone-10-home" alt="Home on a phone: deliveries this week, money owed and this month" className="hero__phone" eager />
           <div className="chip chip--float chip--a" aria-hidden="true">
