@@ -1,6 +1,6 @@
 # Threadé website
 
-The public website for Threadé (`threade.app`): what the app does, plans, FAQ, the launch waitlist and the website privacy note. The app itself is `application-threade` (`app.threade.app`).
+The public website for Threadé (`threade.app`): what the app does, plans, FAQ, the launch waitlist and the website privacy note. The app itself is `application-threade-business` (`app.threade.app`).
 
 React 19 with Create React App, plain CSS, Inter (self-hosted). No cookies, no analytics, nothing loaded from other companies.
 
@@ -23,7 +23,7 @@ npm run build                # build/, then scripts/check-build.js (must pass)
 
 ## Waitlist
 
-The form calls the database function `join_waitlist` (application-threade migration `20261103000000_site_waitlist.sql`, run order step 12). Entries are in the table `site_waitlist`, read in the Supabase SQL Editor:
+The form calls the database function `join_waitlist` (application-threade-business migration `20261103000000_site_waitlist.sql`, run order step 12). Entries are in the table `site_waitlist`, read in the Supabase SQL Editor:
 
 ```sql
 select email, name, business_name, country_code, created_at from site_waitlist order by created_at desc;
@@ -37,7 +37,7 @@ New project from this repo, framework Create React App, production branch `main`
 
 ## Content
 
-All text is in `src/content.js`. Facts must match the app: plans (`application-threade/src/features/billing/plans.content.js`), FAQ (`src/features/help/faq.content.js`) and the legal documents. Screens in `public/shots` are the made-up "Sample Atelier" screenshots from `Project Threadé/marketing-screenshots` (webp).
+All text is in `src/content.js`. Facts must match the app: plans (`application-threade-business/src/features/billing/plans.content.js`), FAQ (`src/features/help/faq.content.js`) and the legal documents. Screens in `public/shots` are the made-up "Sample Atelier" screenshots from `Project Threadé/marketing-screenshots` (webp).
 
 ## Branches
 
