@@ -1,8 +1,9 @@
 {
-  "name": "application-site",
+  "name": "threade-site",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
@@ -15,8 +16,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "node scripts/check-build.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "lint": "eslint --max-warnings=0 --ext .js,.jsx src"
   },
   "eslintConfig": {
     "extends": [
