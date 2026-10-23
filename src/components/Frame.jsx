@@ -192,7 +192,7 @@ export function Footer() {
     <footer className="footer">
       <div className="wrap footer__grid">
         <div className="footer__brand">
-          <Mark small />
+          <Mark />
           <p>Run your tailoring business from one place.</p>
           <a className="button button--primary button--small" href={SIGN_UP_URL}>
             Start free

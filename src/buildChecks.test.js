@@ -94,6 +94,20 @@ describe('settings', () => {
     expect(header('Cross-Origin-Opener-Policy')).toBe('same-origin');
   });
 
+  it('uses the business app logo files and wordmark', () => {
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public', 'manifest.json'), 'utf8'));
+    expect(manifest.icons.map((i) => i.src)).toEqual(['favicon.ico', 'logo192.png', 'logo512.png']);
+    const html = fs.readFileSync(path.join(root, 'public', 'index.html'), 'utf8');
+    expect(html).toContain('<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />');
+    expect(html).toContain('<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />');
+    expect(html).not.toContain('favicon.svg');
+    const css = fs.readFileSync(path.join(root, 'src', 'index.css'), 'utf8');
+    const mark = /\.mark \{([^}]*)\}/.exec(css)[1];
+    expect(mark).toContain('font-size: 22px;');
+    expect(mark).toContain('font-weight: 700;');
+    expect(mark).toContain('letter-spacing: -0.01em;');
+  });
+
   it('never sends /api/ addresses to the page', () => {
     const [rewrite] = vercel.rewrites;
     const pattern = new RegExp(`^${rewrite.source}$`);

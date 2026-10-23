@@ -47,7 +47,7 @@ New project from this repo, framework Create React App, production branch `main`
 
 ## Content
 
-All text is in `src/content.js`. Facts must match the app: plans (`application-threade-business/src/features/billing/plans.content.js`), FAQ (`src/features/help/faq.content.js`) and the legal documents. Screens in `public/shots` are the made-up "Sample Atelier" screenshots from `Project Threadé/marketing-screenshots` (webp).
+Logo: the business app's icon files (`favicon.ico`, `logo192.png`, `logo512.png`, copied unchanged) and its wordmark (text "Threadé", 22px, 700, -0.01em; `.mark` in `index.css`). All text is in `src/content.js`. Facts must match the app: plans (`application-threade-business/src/features/billing/plans.content.js`), FAQ (`src/features/help/faq.content.js`) and the legal documents. Screens in `public/shots` are the made-up "Sample Atelier" screenshots from `Project Threadé/marketing-screenshots` (webp).
 
 ## Branches
 

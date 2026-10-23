@@ -50,6 +50,13 @@ describe('home page', () => {
     expect(within(legal).getByRole('link', { name: 'Website privacy' })).toHaveAttribute('href', '/privacy');
   });
 
+  it('shows the Threadé wordmark and says "team" for a business’s people ("staff" is Threadé’s own)', () => {
+    const { container } = render(<App path="/" />);
+    expect(screen.getByRole('link', { name: 'Threadé home' })).toHaveTextContent('Threadé');
+    const { textContent } = container;
+    expect(textContent.replace(/Threadé staff/g, '')).not.toMatch(/\bstaff\b/i);
+  });
+
   it('says nothing about drafts or counsel', () => {
     const { container } = render(<App path="/" />);
     expect(container.textContent).not.toMatch(/draft|counsel|lawyer|—/i);

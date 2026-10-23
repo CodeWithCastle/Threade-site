@@ -202,37 +202,13 @@ p {
   transform: none;
 }
 
-/* Brand mark */
+/* Brand mark: the business app's wordmark (text "Threadé", 22px, 700, -0.01em, primary text colour). */
 .mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  display: inline-block;
   color: var(--text);
+  font-size: 22px;
   font-weight: 700;
-  font-size: 21px;
-  letter-spacing: -0.02em;
-}
-
-.mark__glyph {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: var(--accent);
-  color: var(--on-accent);
-  font-size: 19px;
-  font-weight: 800;
-}
-
-.mark--small {
-  font-size: 18px;
-}
-
-.mark--small .mark__glyph {
-  width: 30px;
-  height: 30px;
-  font-size: 16px;
+  letter-spacing: -0.01em;
 }
 
 /* Navigation */
