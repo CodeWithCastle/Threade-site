@@ -164,6 +164,18 @@ describe('website privacy page', () => {
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
   });
 
+  it('covers server logs, the reason (consent), transfers and one entry per email, in plain words', () => {
+    const { container } = render(<App path="/privacy" />);
+    expect(screen.getByRole('heading', { name: 'Server logs' })).toBeInTheDocument();
+    expect(screen.getByText(/keep standard server logs for security\. These include your IP address and browser details\./)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Our reason for using your details' })).toBeInTheDocument();
+    expect(screen.getByText(/Your consent: you choose to join the waitlist/)).toBeInTheDocument();
+    expect(screen.getByText(/covered by the providers' standard contractual safeguards/)).toBeInTheDocument();
+    expect(screen.getByText(/We keep one entry per email address/)).toBeInTheDocument();
+    expect(screen.getByText(/Business address: not provided yet/)).toBeInTheDocument();
+    expect(container.textContent).not.toMatch(/—|draft|counsel|lawyer/i);
+  });
+
   it('keeps the menu links pointing at the home page sections', () => {
     render(<App path="/privacy" />);
     const main = screen.getByRole('navigation', { name: 'Main' });
