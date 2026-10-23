@@ -1,15 +1,25 @@
-// The waitlist form: checks what was typed and sends it to the database function
-// public.join_waitlist (application-threade-business migration 20261103000000_site_waitlist).
-import { TEAM_EMAIL } from './content';
+// The waitlist form: checks what was typed and posts it to this site's own server function
+// (api/waitlist.js, logic in src/server/waitlist.js). The pages hold no Supabase address or key.
+import { TEAM_EMAIL, WAITLIST } from './content';
 
-const env = (key) => (process.env[key] ?? '').trim();
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const ENDPOINT = '/api/waitlist';
 
 export const NOT_CONNECTED = `The waitlist is not open yet. Email ${TEAM_EMAIL} and we will add you.`;
 export const OFFLINE = 'You are offline. Connect to the internet and try again.';
 export const FAILED = `Something went wrong. Try again, or email ${TEAM_EMAIL}.`;
+export const DONE = WAITLIST.done;
+export const ALREADY = WAITLIST.already;
 
-export const waitlistReady = () => Boolean(env('REACT_APP_SUPABASE_URL') && env('REACT_APP_SUPABASE_ANON_KEY'));
+// The server answers with a code; the words are ours. Anything else is FAILED (never the server's text).
+export const REFUSALS = {
+  invalid_email: 'Enter an email like name@example.com.',
+  invalid_country: 'Choose where your business is.',
+  invalid_name: 'Keep your name under 80 characters.',
+  invalid_business: 'Keep the business name under 120 characters.',
+  rate_limited: 'Too many sign-ups right now. Try again in a minute.',
+  not_configured: NOT_CONNECTED,
+};
 
 /** Checks the form: { field: message } for each problem. */
 export function validateWaitlist({ email, name, business, country }) {
@@ -23,35 +33,36 @@ export function validateWaitlist({ email, name, business, country }) {
   return errors;
 }
 
-/** Sends the form. Resolves when saved; throws an Error with a message for people otherwise. */
-export async function joinWaitlist({ email, name, business, country }, { fetchImpl = fetch } = {}) {
-  if (!waitlistReady()) throw new Error(NOT_CONNECTED);
+/**
+ * Sends the form. Resolves { already } when saved (or already on the list); throws an Error with a
+ * message for people otherwise. `website` is the hidden field only bots fill: then nothing is sent
+ * and the answer looks the same as a success.
+ */
+export async function joinWaitlist({ email, name, business, country, website }, { fetchImpl = (...args) => fetch(...args) } = {}) {
+  if ((website ?? '').trim()) return { already: false };
   if (typeof navigator !== 'undefined' && navigator.onLine === false) throw new Error(OFFLINE);
-  const url = `${env('REACT_APP_SUPABASE_URL').replace(/\/+$/, '')}/rest/v1/rpc/join_waitlist`;
-  const key = env('REACT_APP_SUPABASE_ANON_KEY');
   let response;
   try {
-    response = await fetchImpl(url, {
+    response = await fetchImpl(ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', apikey: key, Authorization: `Bearer ${key}` },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        p_email: email.trim(),
-        p_name: (name ?? '').trim() || null,
-        p_business: (business ?? '').trim() || null,
-        p_country: country,
+        email: (email ?? '').trim(),
+        name: (name ?? '').trim() || null,
+        business: (business ?? '').trim() || null,
+        country,
       }),
     });
   } catch {
     throw new Error(FAILED);
   }
-  if (response.ok) return true;
   let body = null;
   try {
     body = await response.json();
   } catch {
     // no body
   }
-  // The database explains a refusal in plain words (code P0001); anything else is unexpected.
-  if (body?.code === 'P0001' && body.message) throw new Error(body.message);
-  throw new Error(FAILED);
+  if (response.ok && body?.ok === true) return { already: body.already === true };
+  const code = body?.error;
+  throw new Error(typeof code === 'string' && Object.prototype.hasOwnProperty.call(REFUSALS, code) ? REFUSALS[code] : FAILED);
 }

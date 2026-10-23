@@ -1,9 +1,8 @@
 // Everything the site says, in one place. Plain English, no em dashes.
 // Facts here must match the business app (plans.content.js, faq.content.js, legal.content.js).
 
-const env = (key, fallback = '') => (process.env[key] ?? '').trim() || fallback;
-
-export const APP_URL = env('REACT_APP_APP_URL', 'https://app.threade.app').replace(/\/+$/, '');
+// Literal name only: Create React App then bundles this value and nothing else.
+export const APP_URL = ((process.env.REACT_APP_APP_URL ?? '').trim() || 'https://app.threade.app').replace(/\/+$/, '');
 export const SIGN_UP_URL = `${APP_URL}/signup`;
 export const SIGN_IN_URL = `${APP_URL}/signin`;
 export const LEGAL = {
@@ -66,7 +65,7 @@ export const FEATURES = [
     id: 'store',
     title: 'Store and sales',
     short: 'Ready-made items, in stock.',
-    body: 'Sell ready-made items alongside your made-to-measure work. Track stock and sizes, restock, and get a warning when an item runs low. Sales staff sell at the set price; managers can discount within your limit.',
+    body: 'Sell ready-made items alongside your made-to-measure work. Track stock and sizes, restock, and get a warning when an item runs low. Sales team members sell at the set price; managers can discount within your limit.',
     points: ['Stock and low-stock alerts', 'Sales to clients or walk-ins', 'Price rules you control'],
     image: 'phone-31-store',
     alt: 'Store items with stock levels',
@@ -93,7 +92,7 @@ export const FEATURES = [
     id: 'team',
     title: 'Team and change log',
     short: 'Everyone in their lane.',
-    body: 'Invite managers, sales staff and an accountant, each with the right access. Every change is recorded: who did it and when. The admin stays in charge of the business, backups and the team.',
+    body: 'Invite managers, sales team members and an accountant, each with the right access. Every change is recorded: who did it and when. The admin stays in charge of the business, backups and the team.',
     points: ['Admin, manager, sales and accountant roles', 'A change log of every action', 'Remove access in one tap'],
     image: 'phone-55-team',
     alt: 'Team with roles and a pending invite',
@@ -140,7 +139,7 @@ export const PLANS = [
     price: 'Price to be announced',
     note: 'Before the pilot ends',
     for: 'Ateliers and shops with managers',
-    features: ['10 people, every role', 'Managers and an accountant', 'Everything in Pro', 'Finance by staff member', 'Priority support'],
+    features: ['10 people, every role', 'Managers and an accountant', 'Everything in Pro', 'Finance by team member', 'Priority support'],
   },
 ];
 export const IN_EVERY_PLAN = ['Works offline', 'Sync across devices', 'Install on your phone', 'App lock with PIN', 'Recovery codes', 'Backup and restore'];
@@ -152,7 +151,7 @@ export const FAQ = [
   { q: 'Do I need to download it from an app store?', a: 'No. Open Threadé in your browser, sign in once, then add it to your home screen or dock. It gets its own icon and opens full screen.' },
   { q: 'Does it work without internet?', a: 'Yes. Everything you add is saved on your device first. When the connection comes back, your changes are sent to the server and your team sees them. Signing up, inviting people and sharing links need the internet.' },
   { q: 'Where is my data kept?', a: 'On the devices of your team and on secure servers in the European Union (Ireland). Only people in your business can see it.' },
-  { q: 'Who can do what?', a: 'Admin: everything, including team, backups and deleting the business. Manager: clients, orders, store, expenses and sales staff. Sales: clients, measurements, orders and, if allowed, store sales. Accountant: orders, store (view only), finance and expenses.' },
+  { q: 'Who can do what?', a: 'Admin: everything, including team, backups and deleting the business. Manager: clients, orders, store, expenses and sales team members. Sales: clients, measurements, orders and, if allowed, store sales. Accountant: orders, store (view only), finance and expenses.' },
   { q: 'Do I need my clients’ permission?', a: 'Yes. When you set up the business you confirm that you tell your clients their details are kept in Threadé and keep them only with their permission.' },
   { q: 'Can I use inches instead of centimetres?', a: 'Yes. The admin chooses the unit. Measurements are shown in the unit you choose; nothing you recorded changes.' },
   { q: 'What happens when the pilot ends?', a: `The pilot is free until ${PILOT_END}. Before then you choose Free, Pro or Business. Free needs no payment details; nothing you recorded is deleted on any plan.` },
@@ -164,6 +163,7 @@ export const WAITLIST = {
   lead: 'Leave your email and we will tell you when Threadé opens to everyone, with prices and a launch offer. No spam, ever.',
   consent: 'We use your details only to tell you about Threadé.',
   done: 'You are on the list. We will email you when Threadé opens to everyone.',
+  already: 'You are already on the list. We will email you when Threadé opens to everyone.',
 };
 
 export const COUNTRIES = [
