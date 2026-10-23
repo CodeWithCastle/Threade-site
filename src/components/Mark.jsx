@@ -1,10 +1,5 @@
-export default function Mark({ small = false }) {
-  return (
-    <span className={`mark ${small ? 'mark--small' : ''}`}>
-      <span className="mark__glyph" aria-hidden="true">
-        T
-      </span>
-      <span className="mark__word">Threadé</span>
-    </span>
-  );
+// The Threadé wordmark, the same as in the business app: the text "Threadé", 22px, 700, -0.01em.
+// The icon (stitched T with a needle) is the business app's favicon.ico, logo192.png and logo512.png.
+export default function Mark() {
+  return <span className="mark">Threadé</span>;
 }
