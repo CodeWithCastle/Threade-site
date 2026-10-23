@@ -1,9 +1,8 @@
 // Everything the site says, in one place. Plain English, no em dashes.
 // Facts here must match the business app (plans.content.js, faq.content.js, legal.content.js).
 
-const env = (key, fallback = '') => (process.env[key] ?? '').trim() || fallback;
-
-export const APP_URL = env('REACT_APP_APP_URL', 'https://app.threade.app').replace(/\/+$/, '');
+// Literal name only: Create React App then bundles this value and nothing else.
+export const APP_URL = ((process.env.REACT_APP_APP_URL ?? '').trim() || 'https://app.threade.app').replace(/\/+$/, '');
 export const SIGN_UP_URL = `${APP_URL}/signup`;
 export const SIGN_IN_URL = `${APP_URL}/signin`;
 export const LEGAL = {
@@ -164,6 +163,7 @@ export const WAITLIST = {
   lead: 'Leave your email and we will tell you when Threadé opens to everyone, with prices and a launch offer. No spam, ever.',
   consent: 'We use your details only to tell you about Threadé.',
   done: 'You are on the list. We will email you when Threadé opens to everyone.',
+  already: 'You are already on the list. We will email you when Threadé opens to everyone.',
 };
 
 export const COUNTRIES = [

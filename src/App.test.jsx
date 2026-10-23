@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { joinWaitlist, validateWaitlist, FAILED, NOT_CONNECTED } from './waitlist';
@@ -57,16 +57,18 @@ describe('home page', () => {
 });
 
 describe('waitlist', () => {
-  it('asks people to email when the waitlist is not connected', () => {
-    delete process.env.REACT_APP_SUPABASE_URL;
-    render(<App path="/" />);
-    expect(screen.getByRole('note')).toHaveTextContent('The waitlist is not open yet.');
-    expect(screen.getByRole('button', { name: 'Join the waitlist' })).toBeDisabled();
-  });
+  const answer = (status, body) => jest.fn().mockResolvedValue({ ok: status < 300, status, json: async () => body });
+  const fill = async () => {
+    await userEvent.type(screen.getByLabelText('Email'), ' ada@example.com ');
+    await userEvent.selectOptions(screen.getByLabelText('Where is your business?'), 'NG');
+    // The answer arrives after the click (a promise): let React finish inside act.
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => {
+      userEvent.click(screen.getByRole('button', { name: 'Join the waitlist' }));
+    });
+  };
 
   it('clears a field’s error as soon as it is changed', async () => {
-    process.env.REACT_APP_SUPABASE_URL = 'https://abc.supabase.co';
-    process.env.REACT_APP_SUPABASE_ANON_KEY = 'k';
     render(<App path="/" />);
     await userEvent.click(screen.getByRole('button', { name: 'Join the waitlist' }));
     expect(screen.getByText('Enter your email.')).toBeInTheDocument();
@@ -83,39 +85,74 @@ describe('waitlist', () => {
     expect(validateWaitlist({ email: 'ada@example.com', country: 'GB' })).toEqual({});
   });
 
-  it('joins, sending only what was typed to the database function', async () => {
-    process.env.REACT_APP_SUPABASE_URL = 'https://abc.supabase.co/';
-    process.env.REACT_APP_SUPABASE_ANON_KEY = 'public-anon-key';
-    const fetchImpl = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+  it('joins through this site’s own server function, with no Supabase address or key', async () => {
+    const fetchImpl = answer(200, { ok: true, already: false });
     global.fetch = fetchImpl;
     render(<App path="/" />);
     await userEvent.click(screen.getByRole('button', { name: 'Join the waitlist' }));
     expect(screen.getByText('Enter your email.')).toBeInTheDocument();
     expect(fetchImpl).not.toHaveBeenCalled();
-    await userEvent.type(screen.getByLabelText('Email'), ' ada@example.com ');
-    await userEvent.selectOptions(screen.getByLabelText('Where is your business?'), 'NG');
-    await userEvent.click(screen.getByRole('button', { name: 'Join the waitlist' }));
+    await fill();
     const done = await screen.findByRole('status');
     expect(done).toHaveTextContent('You are on the list.');
     expect(done).toHaveFocus();
     const [url, init] = fetchImpl.mock.calls[0];
-    expect(url).toBe('https://abc.supabase.co/rest/v1/rpc/join_waitlist');
-    expect(init.headers.apikey).toBe('public-anon-key');
-    expect(JSON.parse(init.body)).toEqual({ p_email: 'ada@example.com', p_name: null, p_business: null, p_country: 'NG' });
+    expect(url).toBe('/api/waitlist');
+    expect(init.method).toBe('POST');
+    expect(init.headers).toEqual({ 'Content-Type': 'application/json' });
+    expect(JSON.parse(init.body)).toEqual({ email: 'ada@example.com', name: null, business: null, country: 'NG' });
   });
 
-  it('shows the database refusal in its own words, and a plain message otherwise', async () => {
-    process.env.REACT_APP_SUPABASE_URL = 'https://abc.supabase.co';
-    process.env.REACT_APP_SUPABASE_ANON_KEY = 'k';
+  it('says so when the email is already on the list', async () => {
+    global.fetch = answer(200, { ok: true, already: true });
+    render(<App path="/" />);
+    await fill();
+    expect(await screen.findByRole('status')).toHaveTextContent('You are already on the list. We will email you when Threadé opens to everyone.');
+  });
+
+  it('a filled hidden field (a bot) looks like success and sends nothing', async () => {
+    const fetchImpl = answer(200, { ok: true, already: false });
+    global.fetch = fetchImpl;
+    render(<App path="/" />);
+    const trap = screen.getByLabelText('Website');
+    expect(trap).toHaveAttribute('tabindex', '-1');
+    expect(trap).toHaveAttribute('name', 'website');
+    // Hidden from screen readers too.
+    expect(screen.queryByRole('textbox', { name: 'Website' })).not.toBeInTheDocument();
+    fireEvent.change(trap, { target: { value: 'https://spam.example' } });
+    await fill();
+    expect(await screen.findByRole('status')).toHaveTextContent('You are on the list.');
+    expect(fetchImpl).not.toHaveBeenCalled();
+    await expect(joinWaitlist({ email: 'a@b.co', country: 'GB', website: 'x' }, { fetchImpl })).resolves.toEqual({ already: false });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('explains known refusals in its own words and nothing else', async () => {
     const form = { email: 'ada@example.com', country: 'GB' };
-    const refused = jest.fn().mockResolvedValue({ ok: false, json: async () => ({ code: 'P0001', message: 'Too many sign-ups right now. Try again in a minute.' }) });
-    await expect(joinWaitlist(form, { fetchImpl: refused })).rejects.toThrow('Too many sign-ups right now. Try again in a minute.');
-    const broken = jest.fn().mockResolvedValue({ ok: false, json: async () => ({ code: 'PGRST202', message: 'Could not find the function' }) });
-    await expect(joinWaitlist(form, { fetchImpl: broken })).rejects.toThrow(FAILED);
-    const down = jest.fn().mockRejectedValue(new TypeError('Failed to fetch'));
-    await expect(joinWaitlist(form, { fetchImpl: down })).rejects.toThrow(FAILED);
-    delete process.env.REACT_APP_SUPABASE_ANON_KEY;
-    await expect(joinWaitlist(form, { fetchImpl: down })).rejects.toThrow(NOT_CONNECTED);
+    const cases = [
+      ['invalid_email', 'Enter an email like name@example.com.'],
+      ['invalid_country', 'Choose where your business is.'],
+      ['invalid_name', 'Keep your name under 80 characters.'],
+      ['invalid_business', 'Keep the business name under 120 characters.'],
+      ['rate_limited', 'Too many sign-ups right now. Try again in a minute.'],
+      ['not_configured', NOT_CONNECTED],
+      ['not_allowed', FAILED],
+      ['constructor', FAILED],
+    ];
+    for (const [error, message] of cases) {
+      await expect(joinWaitlist(form, { fetchImpl: answer(400, { ok: false, error }) })).rejects.toThrow(message);
+    }
+    const serverText = answer(400, { code: 'P0001', message: 'relation "site_waitlist" violates constraint', details: 'invalid_email' });
+    await expect(joinWaitlist(form, { fetchImpl: serverText })).rejects.toThrow(FAILED);
+    await expect(joinWaitlist(form, { fetchImpl: jest.fn().mockResolvedValue({ ok: false, status: 502, json: async () => { throw new Error('html'); } }) })).rejects.toThrow(FAILED);
+    await expect(joinWaitlist(form, { fetchImpl: jest.fn().mockRejectedValue(new TypeError('Failed to fetch')) })).rejects.toThrow(FAILED);
+  });
+
+  it('a waitlist that is not open yet asks people to email', async () => {
+    global.fetch = answer(503, { ok: false, error: 'not_configured' });
+    render(<App path="/" />);
+    await fill();
+    expect(await screen.findByRole('alert')).toHaveTextContent('The waitlist is not open yet.');
   });
 });
 

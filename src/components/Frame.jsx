@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { COUNTRIES, FOOTER, LEGAL, NAV, SIGN_IN_URL, SIGN_UP_URL, SUPPORT_EMAIL, TEAM_EMAIL, WAITLIST } from '../content';
-import { joinWaitlist, validateWaitlist, waitlistReady } from '../waitlist';
+import { ALREADY, DONE, joinWaitlist, validateWaitlist } from '../waitlist';
 import Mark from './Mark';
 
 export function Nav() {
@@ -49,13 +49,12 @@ export function Nav() {
   );
 }
 
-const EMPTY = { email: '', name: '', business: '', country: '' };
+const EMPTY = { email: '', name: '', business: '', country: '', website: '' };
 
 export function Waitlist() {
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ state: 'idle', message: '' });
-  const ready = waitlistReady();
   const doneRef = useRef(null);
 
   // The form (and its focused button) is replaced by the message: move focus there so
@@ -81,8 +80,8 @@ export function Waitlist() {
     if (Object.keys(found).length) return;
     setStatus({ state: 'sending', message: '' });
     try {
-      await joinWaitlist(form);
-      setStatus({ state: 'done', message: WAITLIST.done });
+      const { already } = await joinWaitlist(form);
+      setStatus({ state: 'done', message: already ? ALREADY : DONE });
       setForm(EMPTY);
     } catch (error) {
       setStatus({ state: 'error', message: error.message });
@@ -115,12 +114,6 @@ export function Waitlist() {
           </p>
         ) : (
           <form className="waitlist__form" onSubmit={submit} noValidate aria-describedby="wl-consent">
-            {!ready && (
-              <p className="notice" role="note">
-                The waitlist is not open yet. Email{' '}
-                <a href={`mailto:${TEAM_EMAIL}?subject=Thread%C3%A9%20waitlist`}>{TEAM_EMAIL}</a> and we will add you.
-              </p>
-            )}
             <div className="field">
               <label htmlFor="wl-email">Email</label>
               <input type="email" autoComplete="email" inputMode="email" required {...field('email')} />
@@ -170,12 +163,17 @@ export function Waitlist() {
                 </p>
               )}
             </div>
+            {/* Left empty by people (hidden from view and from screen readers); bots fill it. */}
+            <div className="hp" aria-hidden="true">
+              <label htmlFor="wl-website">Website</label>
+              <input type="text" id="wl-website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={set('website')} />
+            </div>
             {status.state === 'error' && (
               <p className="notice notice--error" role="alert">
                 {status.message}
               </p>
             )}
-            <button type="submit" className="button button--primary button--block" disabled={!ready || status.state === 'sending'}>
+            <button type="submit" className="button button--primary button--block" disabled={status.state === 'sending'}>
               {status.state === 'sending' ? 'Joining…' : 'Join the waitlist'}
             </button>
             <p className="waitlist__consent" id="wl-consent">

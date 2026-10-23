@@ -87,6 +87,15 @@ p {
   border-radius: 6px;
 }
 
+/* The waitlist's hidden field for bots: off screen, not just invisible, so people never fill it. */
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
