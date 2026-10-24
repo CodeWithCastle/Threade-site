@@ -52,7 +52,10 @@ describe('home page', () => {
 
   it('shows the Threadé wordmark and says "team" for a business’s people ("staff" is Threadé’s own)', () => {
     const { container } = render(<App path="/" />);
-    expect(screen.getByRole('link', { name: 'Threadé home' })).toHaveTextContent('Threadé');
+    const home = screen.getByRole('link', { name: 'Threadé home' });
+    expect(home).toHaveTextContent('Threadé');
+    // The logo before the name is the business app's icon (founder request 2026-10-24).
+    expect(within(home).getByRole('presentation', { hidden: true })).toHaveAttribute('src', '/logo192.png');
     const { textContent } = container;
     expect(textContent.replace(/Threadé staff/g, '')).not.toMatch(/\bstaff\b/i);
   });
