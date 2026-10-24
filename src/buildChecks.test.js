@@ -26,6 +26,16 @@ describe('before the build (check-env)', () => {
     expect(checkEnvironment({}, readEnvFiles(root, ['.env'])).problems).toEqual([]);
   });
 
+  // Vercel adds these for Create React App projects (System Environment Variables). The builds of
+  // 2026-10-24 failed on them; www.threade.app is in every page, so it must not count as a secret.
+  it("allows Vercel's own REACT_APP_VERCEL_ details, but not one that looks like a secret", () => {
+    const vercel = { REACT_APP_VERCEL_ENV: 'production', REACT_APP_VERCEL_URL: 'x-abc123-team.vercel.app', REACT_APP_VERCEL_PROJECT_PRODUCTION_URL: 'www.threade.app', REACT_APP_VERCEL_GIT_COMMIT_MESSAGE: 'Merge development into main', REACT_APP_VERCEL_GIT_COMMIT_SHA: '6440ce919889f153fe31a533cc91b3c30b5f9fcb' };
+    expect(checkEnvironment(vercel, committed).problems).toEqual([]);
+    expect(secretValues(vercel, committed)).toEqual([]);
+    const { problems } = checkEnvironment({ REACT_APP_VERCEL_OIDC_TOKEN: FAKE_SECRET }, committed);
+    expect(problems).toEqual([expect.stringContaining('REACT_APP_VERCEL_OIDC_TOKEN')]);
+  });
+
   it('refuses server keys and database credentials, naming them only', () => {
     const env = { SUPABASE_SERVICE_ROLE_KEY: FAKE_SECRET, SUPABASE_SECRET_KEY: FAKE_SECRET, SUPABASE_JWT_SECRET: FAKE_SECRET, POSTGRES_PASSWORD: FAKE_SECRET };
     const { problems } = checkEnvironment(env, committed);

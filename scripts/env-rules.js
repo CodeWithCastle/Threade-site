@@ -17,9 +17,15 @@ const ENV_FILES = ['.env.production.local', '.env.local', '.env.production', '.e
 
 // Build machine details that may appear in the output by chance (paths, commit text, addresses).
 // A name that looks like a secret is still checked.
-const MACHINE = /^(PATH|HOME|PWD|OLDPWD|INIT_CWD|SHELL|USER|LOGNAME|HOSTNAME|HOST|LANG|LANGUAGE|LC_\w+|TERM|TERM_\w+|COLORTERM|TZ|TMPDIR|TMP|TEMP|EDITOR|PAGER|SHLVL|_|CI|NODE|NODE_ENV|NODE_OPTIONS|NODE_VERSION|PUBLIC_URL|GENERATE_SOURCEMAP|INLINE_RUNTIME_CHUNK|VERCEL|VERCEL_\w+|NOW_\w+|npm_\w+|NVM_\w+|XDG_\w+|COREPACK_\w*)$/;
+const MACHINE = /^(REACT_APP_VERCEL_\w+|PATH|HOME|PWD|OLDPWD|INIT_CWD|SHELL|USER|LOGNAME|HOSTNAME|HOST|LANG|LANGUAGE|LC_\w+|TERM|TERM_\w+|COLORTERM|TZ|TMPDIR|TMP|TEMP|EDITOR|PAGER|SHLVL|_|CI|NODE|NODE_ENV|NODE_OPTIONS|NODE_VERSION|PUBLIC_URL|GENERATE_SOURCEMAP|INLINE_RUNTIME_CHUNK|VERCEL|VERCEL_\w+|NOW_\w+|npm_\w+|NVM_\w+|XDG_\w+|COREPACK_\w*)$/;
 const SECRETISH = /(^|_)KEYS?($|_)|TOKEN|SECRET|PASSW|PRIVATE|CREDENTIAL|AUTH|BYPASS|OIDC|COOKIE|SESSION|SALT/i;
 const MIN_SECRET_LENGTH = 12;
+// Vercel's own system values, given to Create React App projects with the REACT_APP_ prefix
+// (REACT_APP_VERCEL_ENV, _URL, _GIT_COMMIT_SHA, ...) while "Automatically expose System Environment
+// Variables" is on. Public details of the deployment, not secrets; the code reads none of them by
+// name, so none reaches the bundle. A name that looks like a secret is still refused.
+const VERCEL_SYSTEM = /^REACT_APP_VERCEL_[A-Z0-9_]+$/;
+const isVercelSystem = (key) => VERCEL_SYSTEM.test(key) && !SECRETISH.test(key);
 
 const set = (value) => typeof value === 'string' && value.trim() !== '';
 
@@ -49,7 +55,7 @@ function checkEnvironment(env, entries) {
   const warnings = [];
   const allowed = BUNDLED.join(' and ');
   for (const [key, value] of Object.entries(env)) {
-    if (!set(value)) continue;
+    if (!set(value) || isVercelSystem(key)) continue;
     if (FORBIDDEN.test(key)) problems.push(`${key} is set in the build environment. Delete it (Vercel: Settings, Environment Variables; never connect the Supabase integration to this project).`);
     else if (key.startsWith('REACT_APP_') && !BUNDLED.includes(key)) problems.push(`${key} is set: every REACT_APP_ variable is sent to browsers, and only ${allowed} are allowed. Delete it.`);
   }
@@ -94,4 +100,4 @@ function supabaseIn(text) {
   return SUPABASE_IN_PAGES.filter(([pattern]) => pattern.test(text)).map(([, what]) => what);
 }
 
-module.exports = { BUNDLED, SERVER_ONLY, FORBIDDEN, ENV_FILES, readEnvFiles, checkEnvironment, secretValues, leakedIn, supabaseIn };
+module.exports = { isVercelSystem, BUNDLED, SERVER_ONLY, FORBIDDEN, ENV_FILES, readEnvFiles, checkEnvironment, secretValues, leakedIn, supabaseIn };
