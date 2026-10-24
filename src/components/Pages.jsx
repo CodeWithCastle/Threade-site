@@ -14,8 +14,9 @@ import {
   TEAM_EMAIL,
 } from '../content';
 import { GUIDES, guideBySlug } from '../guides';
+import { FAQ_SECTIONS, KEY_FACTS } from '../answers';
 import { Breadcrumbs, CtaBand, PageHead } from './Common';
-import { Plans } from './Sections';
+import { Fit, Plans } from './Sections';
 import { Phone } from './Shot';
 
 const listOf = (items) => `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
@@ -249,6 +250,7 @@ export function AboutPage() {
     <main id="main" className="section prose-page">
       <div className="wrap prose">
         <PageHead crumbs={[{ label: 'About' }]} kicker="About" title={ABOUT.title} />
+        <KeyFacts />
         {ABOUT.body.map((p) => (
           <p key={p}>{p}</p>
         ))}
@@ -378,3 +380,67 @@ export function NotFoundPage() {
     </main>
   );
 }
+
+// Threadé in one table: the facts people and assistants ask about first.
+export function KeyFacts() {
+  return (
+    <section className="facts" aria-labelledby="facts-title">
+      <h2 id="facts-title">Threadé at a glance</h2>
+      <dl className="facts__list">
+        {KEY_FACTS.map((f) => (
+          <div key={f.label} className="facts__row">
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+const slugOf = (title) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+export function FaqPage() {
+  return (
+    <main id="main">
+      <div className="wrap prose">
+        <PageHead
+          crumbs={[{ label: 'FAQ' }]}
+          kicker="FAQ"
+          title="Questions about Threadé, answered"
+          lead="What Threadé is, what it costs, where it works and how each part of the app works. Inside the app, the same answers are under More, FAQ."
+        >
+          <nav aria-label="Topics" className="toc">
+            {FAQ_SECTIONS.map((s) => (
+              <a key={s.title} href={`#${slugOf(s.title)}`}>
+                {s.title}
+              </a>
+            ))}
+          </nav>
+        </PageHead>
+        <KeyFacts />
+        {FAQ_SECTIONS.map((section) => (
+          <section key={section.title} id={slugOf(section.title)} className="faq-group" aria-labelledby={`${slugOf(section.title)}-title`}>
+            <h2 id={`${slugOf(section.title)}-title`}>{section.title}</h2>
+            {section.items.map((item) => (
+              <div key={item.q} className="answer">
+                <h3>{item.q}</h3>
+                <p>{item.a}</p>
+                {item.steps && (
+                  <ul className="ticks prose__list">
+                    {item.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </section>
+        ))}
+      </div>
+      <Fit />
+      <CtaBand />
+    </main>
+  );
+}
+

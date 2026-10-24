@@ -191,6 +191,6 @@ describe('website privacy page', () => {
     const main = screen.getByRole('navigation', { name: 'Main' });
     expect(within(main).getByRole('link', { name: 'Features' })).toHaveAttribute('href', '/features');
     expect(within(main).getByRole('link', { name: 'Pricing' })).toHaveAttribute('href', '/pricing');
-    expect(within(main).getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');
+    expect(within(main).getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/faq');
   });
 });
