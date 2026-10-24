@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { AboutTeaser, Always, Audience, Faq, Features, GuidesTeaser, Hero, How, Plans, Segments, Showcase, Workflow } from './components/Sections';
+import { AboutTeaser, Always, Audience, Faq, Features, Fit, GuidesTeaser, Hero, How, Plans, Segments, Showcase, Workflow } from './components/Sections';
 import { Footer, Nav, Waitlist } from './components/Frame';
-import { AboutPage, FeaturesPage, GuidePage, GuidesPage, NotFoundPage, PricingPage, SegmentPage } from './components/Pages';
+import { AboutPage, FaqPage, FeaturesPage, GuidePage, GuidesPage, NotFoundPage, PricingPage, SegmentPage } from './components/Pages';
 import PrivacyPage from './components/PrivacyPage';
 import { pageFor } from './pages';
 import useReveal from './useReveal';
@@ -15,6 +15,7 @@ function Home() {
       <Workflow />
       <Showcase />
       <Segments />
+      <Fit />
       <Always />
       <How />
       <Plans />
@@ -38,6 +39,8 @@ function Body({ page }) {
       return <PricingPage />;
     case 'about':
       return <AboutPage />;
+    case 'faq':
+      return <FaqPage />;
     case 'guides':
       return <GuidesPage />;
     case 'guide':

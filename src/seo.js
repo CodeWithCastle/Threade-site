@@ -1,8 +1,9 @@
 // What goes in each page's <head>: title, description, canonical address and structured data.
 // Pure functions, used by scripts/prerender.js at build time and by the tests.
 // Structured data says only what is true today: no ratings, no prices that are not public.
-import { FAQ, SITE_URL, SUPPORT_EMAIL, TEAM_EMAIL } from './content';
-import { guideBySlug } from './guides';
+import { ALL_QUESTIONS, FAQ_SECTIONS, FIT, KEY_FACTS } from './answers';
+import { COUNTRIES_SERVED, FEATURES, PLAN_SECTIONS, PLANS, PLANS_NOTE, SEGMENTS, SITE_URL, SUPPORT_EMAIL, TEAM_EMAIL, WORKFLOW } from './content';
+import { GUIDES, guideBySlug } from './guides';
 import { PAGES } from './pages';
 
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -19,6 +20,8 @@ const organization = () => ({
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/logo512.png`,
   email: TEAM_EMAIL,
+  description: 'Threadé makes an app that runs tailoring, fashion and small retail businesses.',
+  knowsAbout: ['Tailoring business management', 'Client measurements', 'Made-to-measure orders', 'Fashion production', 'Retail stock control'],
   founder: { '@type': 'Person', name: 'Dan Aremu' },
   contactPoint: [{ '@type': 'ContactPoint', contactType: 'customer support', email: SUPPORT_EMAIL, availableLanguage: 'English' }],
 });
@@ -33,11 +36,35 @@ const application = () => ({
   alternateName: 'Threade',
   url: `${SITE_URL}/`,
   applicationCategory: 'BusinessApplication',
+  applicationSubCategory: 'Tailoring and fashion business management',
   operatingSystem: 'Web browser, Android, iOS, Windows, macOS',
   description: PAGES[0].description,
   image: `${SITE_URL}/og-image.png`,
+  screenshot: FEATURES.map((f) => `${SITE_URL}/shots/${f.image}@2x.webp`),
+  featureList: FEATURES.map((f) => `${f.title}: ${f.short}`).concat(['Works offline', 'Installs from the browser', 'Backup and restore']),
+  audience: { '@type': 'BusinessAudience', audienceType: 'Tailors, fashion designers, ateliers, boutiques and small shops' },
+  areaServed: COUNTRIES_SERVED.map((c) => ({ '@type': 'Country', name: c.replace(/^the /, '') })),
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  softwareHelp: { '@type': 'CreativeWork', url: `${SITE_URL}/faq` },
   publisher: { '@id': ORG_ID },
   offers: { '@type': 'Offer', name: 'Free plan', price: '0', priceCurrency: 'USD' },
+});
+
+// Each page says what it is, which site it belongs to and that it is about the app.
+const webPage = (page) => ({
+  '@type': page.kind === 'faq' ? 'FAQPage' : page.kind === 'about' ? 'AboutPage' : 'WebPage',
+  '@id': `${canonicalFor(page)}#page`,
+  url: canonicalFor(page),
+  name: page.title,
+  description: page.description,
+  isPartOf: { '@id': SITE_ID },
+  about: { '@id': APP_ID },
+  dateModified: page.updated,
+  inLanguage: 'en',
+  ...(page.kind === 'faq'
+    ? { mainEntity: ALL_QUESTIONS.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+    : {}),
 });
 
 const breadcrumbs = (page) => {
@@ -49,11 +76,6 @@ const breadcrumbs = (page) => {
     itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, item: canonicalFor(item) })),
   };
 };
-
-const faqPage = (items) => ({
-  '@type': 'FAQPage',
-  mainEntity: items.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
-});
 
 const article = (page) => {
   const guide = guideBySlug(page.guide);
@@ -74,9 +96,8 @@ const article = (page) => {
 /** The structured data for a page, as one @graph object (or null). */
 export function structuredData(page) {
   if (page.noindex) return null;
-  const graph = [organization(), website()];
-  if (page.kind === 'home') graph.push(application(), faqPage(FAQ));
-  if (page.kind === 'pricing') graph.push(application());
+  // The app is described once per page so every page tells an assistant what Threadé is.
+  const graph = [organization(), website(), application(), webPage(page)];
   if (page.kind === 'guide') graph.push(article(page));
   if (page.kind !== 'home') graph.push(breadcrumbs(page));
   return { '@context': 'https://schema.org', '@graph': graph };
@@ -104,3 +125,59 @@ export function sitemapXml(pages = PAGES) {
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
+
+// llms.txt (https://llmstxt.org): a short map of the site for AI assistants, and llms-full.txt
+// with everything they need to describe Threadé accurately. Built from the same content as
+// the pages, so they never disagree. Neither guarantees that an assistant uses them.
+const url = (path) => (path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`);
+const linkLine = (path) => {
+  const page = PAGES.find((p) => p.path === path);
+  return `- [${page.crumb ?? 'Home'}](${url(path)}): ${page.description}`;
+};
+
+export function llmsTxt() {
+  const facts = KEY_FACTS.map((f) => `- ${f.label}: ${f.value}`).join('\n');
+  const pages = PAGES.filter((p) => p.kind !== 'guide' && p.kind !== 'privacy').map((p) => linkLine(p.path)).join('\n');
+  const guides = GUIDES.map((g) => `- [${g.title}](${url(`/guides/${g.slug}`)}): ${g.short}`).join('\n');
+  return `# Threadé
+
+> Threadé (also written Threade) is an app for tailors, fashion designers, ateliers, boutiques and other small shops. It keeps clients, measurements, orders, production, payments, store stock, invoices, expenses and finance in one place, shared with the team, and works offline.
+
+${facts}
+
+## Good fit
+
+${FIT.bestFor.map((x) => `- ${x}`).join('\n')}
+
+## Not what it does today
+
+${FIT.notFor.map((x) => `- ${x}`).join('\n')}
+
+## Pages
+
+${pages}
+
+## Guides
+
+${guides}
+
+## Optional
+
+- [Everything on one page](${SITE_URL}/llms-full.txt): every feature, plan and answer in plain text
+`;
+}
+
+const valueText = (v) => (v === true ? 'yes' : v === false ? 'no' : v);
+
+export function llmsFullTxt() {
+  const parts = [llmsTxt().replace(/\n## Optional[\s\S]*$/, '').trim()];
+  parts.push(`## Features\n\n${FEATURES.map((f) => `### ${f.title}\n\n${f.body}\n\n${f.points.map((p) => `- ${p}`).join('\n')}\n\nMore: ${url(`/features#${f.id}`)}`).join('\n\n')}`);
+  parts.push(`## How an order moves through Threadé\n\n${WORKFLOW.steps.map((s, i) => `${i + 1}. ${s.title}: ${s.body}`).join('\n')}`);
+  parts.push(`## Who it is for\n\n${Object.values(SEGMENTS).map((s) => `### ${s.kicker}\n\n${s.lead}\n\n${s.problems.map((p) => `- ${p.title}: ${p.body}`).join('\n')}\n\nMore: ${url(s.path)}`).join('\n\n')}`);
+  const rows = PLAN_SECTIONS.flatMap((sec) => sec.rows.map((r) => `| ${r.label} | ${PLANS.map((p) => valueText(r.values[p.key])).join(' | ')} |`));
+  parts.push(`## Plans and pricing\n\n${PLANS.map((p) => `- ${p.name}: ${p.price}. ${p.for}.`).join('\n')}\n\n${PLANS_NOTE}\n\n| Feature | ${PLANS.map((p) => p.name).join(' | ')} |\n|---|${PLANS.map(() => '---').join('|')}|\n${rows.join('\n')}`);
+  parts.push(`## Questions and answers\n\n${FAQ_SECTIONS.map((sec) => `### ${sec.title}\n\n${sec.items.map((i) => `Q: ${i.q}\nA: ${i.a}${i.steps ? `\n${i.steps.map((st) => `- ${st}`).join('\n')}` : ''}`).join('\n\n')}`).join('\n\n')}`);
+  parts.push(`## Guides\n\n${GUIDES.map((g) => `### ${g.title}\n\n${g.blocks.map((b) => b.h ? `#### ${b.h}` : b.list ? b.list.map((x) => `- ${x}`).join('\n') : b.p).join('\n\n')}\n\n${g.threade.title}: ${g.threade.body}`).join('\n\n')}`);
+  return `${parts.join('\n\n')}\n`;
+}
+

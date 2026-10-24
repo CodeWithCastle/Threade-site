@@ -3,6 +3,7 @@ import App from './App';
 import { FEATURES, PLANS, SEGMENTS } from './content';
 import { GUIDES } from './guides';
 import { NOT_FOUND, PAGES, pageFor } from './pages';
+import { ALL_QUESTIONS, FAQ_SECTIONS, FIT } from './answers';
 
 // Founder request 2026-10-24: one crawlable page per audience, features, pricing, about and guides.
 describe('public pages', () => {
@@ -60,7 +61,8 @@ describe('public pages', () => {
 
   it('about shows who provides Threadé and how to reach us, without an invented address', () => {
     render(<App path="/about" />);
-    expect(within(screen.getByRole('main')).getByText(/sole trader trading as Threadé/)).toBeInTheDocument();
+    expect(within(screen.getByRole('main')).getAllByText(/sole trader trading as Threadé/).length).toBeGreaterThan(0);
+    expect(screen.getByRole('heading', { name: 'Threadé at a glance' })).toBeInTheDocument();
     expect(screen.getByText(/Business address: not provided yet/)).toBeInTheDocument();
     expect(within(screen.getByRole('main')).getByRole('link', { name: 'support@threade.app' })).toHaveAttribute('href', 'mailto:support@threade.app');
   });
@@ -72,7 +74,7 @@ describe('public pages', () => {
       const { unmount } = render(<App path={`/guides/${g.slug}`} />);
       const article = screen.getByRole('article', { name: g.title });
       expect(within(article).getByText(/Published/)).toContainElement(within(article).getAllByText(/2026/)[0]);
-      expect(within(article).getByRole('heading', { name: 'How Threadé helps' })).toBeInTheDocument();
+      expect(within(article).getByRole('heading', { name: /^How Threadé (helps|answers these)$/ })).toBeInTheDocument();
       unmount();
     });
   });
@@ -84,5 +86,21 @@ describe('public pages', () => {
     expect(screen.getByRole('link', { name: 'Threadé for tailors' })).toHaveAttribute('href', '/tailors');
     expect(screen.getByRole('link', { name: 'Compare every plan in full' })).toHaveAttribute('href', '/pricing');
     expect(screen.queryByRole('link', { name: /^(click here|read more|here)$/i })).not.toBeInTheDocument();
+  });
+
+  it('the FAQ page shows every answer openly, grouped by topic, with the key facts and who it suits', () => {
+    render(<App path="/faq" />);
+    ALL_QUESTIONS.forEach((q) => expect(screen.getByRole('heading', { level: 3, name: q.q })).toBeInTheDocument());
+    FAQ_SECTIONS.forEach((s) => expect(screen.getByRole('region', { name: s.title })).toBeInTheDocument());
+    expect(screen.getByRole('heading', { name: 'Threadé at a glance' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Not what it does today' })).toBeInTheDocument();
+    expect(screen.getByRole('main')).not.toHaveTextContent(/₦\d|£\d|\$\d|€\d/);
+  });
+
+  it('the home page says plainly who Threadé suits and what it does not do', () => {
+    render(<App path="/" />);
+    const fit = screen.getByRole('region', { name: 'Who Threadé suits, and what it does not do.' });
+    FIT.notFor.forEach((x) => expect(fit).toHaveTextContent(x));
+    expect(screen.getByRole('link', { name: 'See every question and answer' })).toHaveAttribute('href', '/faq');
   });
 });

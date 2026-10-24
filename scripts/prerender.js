@@ -1,7 +1,7 @@
 // Runs after `react-scripts build` (postbuild, before check-build): writes every public page in
 // src/pages.js as its own HTML file with the page already rendered, so search engines and AI
 // search crawlers read the content without running JavaScript. React then attaches to it
-// (src/index.js). Also writes 404.html and sitemap.xml.
+// (src/index.js). Also writes 404.html, sitemap.xml, llms.txt and llms-full.txt.
 //
 // Vercel serves /features from build/features.html ("cleanUrls" in vercel.json) and any
 // unknown address with build/404.html and a 404 status.
@@ -37,7 +37,7 @@ const React = require('react');
 const { renderToString } = require('react-dom/server');
 const App = require(path.join(src, 'App.jsx')).default;
 const { PAGES, NOT_FOUND } = require(path.join(src, 'pages.js'));
-const { headFor, jsonLdText, sitemapXml } = require(path.join(src, 'seo.js'));
+const { headFor, jsonLdText, llmsFullTxt, llmsTxt, sitemapXml } = require(path.join(src, 'seo.js'));
 
 const escapeAttr = (text) => String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const escapeText = (text) => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -89,5 +89,7 @@ for (const page of [...PAGES, NOT_FOUND]) {
   written.push(path.relative(build, file));
 }
 fs.writeFileSync(path.join(build, 'sitemap.xml'), sitemapXml());
-written.push('sitemap.xml');
-console.log(`Prerendered ${written.length - 1} pages and the sitemap: ${written.join(', ')}`);
+fs.writeFileSync(path.join(build, 'llms.txt'), llmsTxt());
+fs.writeFileSync(path.join(build, 'llms-full.txt'), llmsFullTxt());
+written.push('sitemap.xml', 'llms.txt', 'llms-full.txt');
+console.log(`Prerendered ${written.length - 3} pages, the sitemap and llms.txt: ${written.join(', ')}`);

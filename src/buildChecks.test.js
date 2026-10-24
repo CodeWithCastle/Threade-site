@@ -118,10 +118,13 @@ describe('settings', () => {
     expect(vercel.headers.find((h) => h.source === '/static/(.*)').headers[0].value).toBe('public, max-age=31536000, immutable');
   });
 
-  it('robots.txt opens the pages to search engines and OAI-SearchBot, keeps /api/ out, and names the sitemap', () => {
+  it('robots.txt opens the pages to search engines and AI assistants, keeps /api/ out, and names the sitemap', () => {
     const robots = fs.readFileSync(path.join(root, 'public', 'robots.txt'), 'utf8');
     expect(robots).toMatch(/User-agent: \*\nAllow: \/\nDisallow: \/api\//);
-    expect(robots).toMatch(/User-agent: OAI-SearchBot\nAllow: \/\nDisallow: \/api\//);
+    // Founder decision 2026-10-24: search, user-triggered and training crawlers are all welcome.
+    const named = ['OAI-SearchBot', 'ChatGPT-User', 'GPTBot', 'Claude-SearchBot', 'Claude-User', 'ClaudeBot', 'Googlebot', 'Google-Extended', 'Bingbot', 'PerplexityBot', 'CCBot'];
+    named.forEach((bot) => expect(robots).toContain(`User-agent: ${bot}\n`));
+    expect(robots).toMatch(/User-agent: CCBot\nAllow: \/\nDisallow: \/api\//);
     expect(robots).toContain('Sitemap: https://www.threade.app/sitemap.xml');
     expect(robots).not.toMatch(/Disallow: \/\s*$/m);
   });
