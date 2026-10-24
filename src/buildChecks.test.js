@@ -80,7 +80,7 @@ describe('settings', () => {
 
   it('checks the environment before and the output after every build, and installs without package scripts', () => {
     expect(pkg.scripts.prebuild).toBe('node scripts/check-env.js');
-    expect(pkg.scripts.postbuild).toBe('node scripts/check-build.js');
+    expect(pkg.scripts.postbuild).toBe('node scripts/prerender.js && node scripts/check-build.js');
     expect(vercel.installCommand).toBe('npm ci --ignore-scripts');
   });
 
@@ -108,12 +108,22 @@ describe('settings', () => {
     expect(mark).toContain('letter-spacing: -0.01em;');
   });
 
-  it('never sends /api/ addresses to the page', () => {
-    const [rewrite] = vercel.rewrites;
-    const pattern = new RegExp(`^${rewrite.source}$`);
-    expect(pattern.test('/privacy')).toBe(true);
-    expect(pattern.test('/api/waitlist')).toBe(false);
-    expect(rewrite.destination).toBe('/index.html');
+  it('serves each prerendered page at its clean address and unknown addresses as a real 404', () => {
+    // No catch-all rewrite: /features is build/features.html, anything else is build/404.html
+    // with a 404 status, so search engines never index a copy of the home page.
+    expect(vercel.rewrites).toBeUndefined();
+    expect(vercel.cleanUrls).toBe(true);
+    expect(vercel.trailingSlash).toBe(false);
+    // Hashed build files never change, so browsers may keep them for a year.
+    expect(vercel.headers.find((h) => h.source === '/static/(.*)').headers[0].value).toBe('public, max-age=31536000, immutable');
+  });
+
+  it('robots.txt opens the pages to search engines and OAI-SearchBot, keeps /api/ out, and names the sitemap', () => {
+    const robots = fs.readFileSync(path.join(root, 'public', 'robots.txt'), 'utf8');
+    expect(robots).toMatch(/User-agent: \*\nAllow: \/\nDisallow: \/api\//);
+    expect(robots).toMatch(/User-agent: OAI-SearchBot\nAllow: \/\nDisallow: \/api\//);
+    expect(robots).toContain('Sitemap: https://www.threade.app/sitemap.xml');
+    expect(robots).not.toMatch(/Disallow: \/\s*$/m);
   });
 
   it('the pages read environment variables by literal name only and never import the server code', () => {
