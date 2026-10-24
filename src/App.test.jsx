@@ -15,7 +15,7 @@ afterEach(() => {
 describe('home page', () => {
   it('leads with the promise and sends Start free to the app sign-up', () => {
     render(<App path="/" />);
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Your workshop, measured to fit.');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Run your tailoring business from one app.');
     const start = screen.getAllByRole('link', { name: 'Start free' });
     expect(start.length).toBeGreaterThan(1);
     start.forEach((link) => expect(link).toHaveAttribute('href', 'https://app.threade.app/signup'));
@@ -186,10 +186,11 @@ describe('website privacy page', () => {
     expect(container.textContent).not.toMatch(/—|draft|counsel|lawyer/i);
   });
 
-  it('keeps the menu links pointing at the home page sections', () => {
+  it('keeps the menu links working from every page', () => {
     render(<App path="/privacy" />);
     const main = screen.getByRole('navigation', { name: 'Main' });
-    expect(within(main).getByRole('link', { name: 'Features' })).toHaveAttribute('href', '/#features');
+    expect(within(main).getByRole('link', { name: 'Features' })).toHaveAttribute('href', '/features');
+    expect(within(main).getByRole('link', { name: 'Pricing' })).toHaveAttribute('href', '/pricing');
     expect(within(main).getByRole('link', { name: 'FAQ' })).toHaveAttribute('href', '/#faq');
   });
 });

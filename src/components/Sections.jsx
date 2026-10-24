@@ -1,7 +1,10 @@
 import { useId, useRef, useState } from 'react';
 import {
+  ABOUT,
   ALWAYS,
   AUDIENCE,
+  SEGMENTS,
+  WORKFLOW,
   FAQ,
   FEATURES,
   HERO,
@@ -13,6 +16,7 @@ import {
 } from '../content';
 import { Laptop, Phone } from './Shot';
 import Tape from './Tape';
+import { GUIDES } from '../guides';
 
 export function Hero() {
   return (
@@ -33,7 +37,7 @@ export function Hero() {
             <a className="button button--primary" href={SIGN_UP_URL}>
               {HERO.primary}
             </a>
-            <a className="button button--ghost" href="#waitlist">
+            <a className="button button--ghost" href="#workflow">
               {HERO.secondary}
             </a>
           </div>
@@ -66,7 +70,9 @@ export function Audience() {
         <p>Made for</p>
         <ul>
           {AUDIENCE.map((a) => (
-            <li key={a}>{a}</li>
+            <li key={a.href}>
+              <a href={a.href}>{a.label}</a>
+            </li>
           ))}
         </ul>
       </div>
@@ -175,7 +181,7 @@ export function Always() {
         </header>
         <ul className="cards">
           {ALWAYS.map((item, i) => (
-            <li key={item.title} className="card card--stitch" data-reveal style={{ transitionDelay: `${(i % 3) * 70}ms` }}>
+            <li key={item.title} className="card card--stitch" data-reveal>
               <span className="card__num" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </span>
@@ -247,6 +253,9 @@ export function Plans() {
             </article>
           ))}
         </div>
+        <p className="plans__more">
+          <a href="/pricing">Compare every plan in full</a>
+        </p>
         <div className="plans__every" data-reveal>
           <p>In every plan</p>
           <ul>
@@ -267,7 +276,10 @@ export function Faq() {
         <header className="section__head section__head--left" data-reveal>
           <p className="kicker">Questions</p>
           <h2 id="faq-title">Good to know.</h2>
-          <p className="section__lead">More answers are inside the app, under More, FAQ.</p>
+          <p className="section__lead">
+            More answers are inside the app, under More, FAQ. Still stuck? Read our <a href="/guides">guides</a> or{' '}
+            <a href="/about">contact us</a>.
+          </p>
         </header>
         <div className="faq__list">
           {FAQ.map((item) => (
@@ -281,3 +293,97 @@ export function Faq() {
     </section>
   );
 }
+
+export function Workflow() {
+  return (
+    <section id="workflow" className="section workflow" aria-labelledby="workflow-title">
+      <div className="wrap">
+        <header className="section__head" data-reveal>
+          <p className="kicker">{WORKFLOW.kicker}</p>
+          <h2 id="workflow-title">{WORKFLOW.title}</h2>
+          <p className="section__lead">{WORKFLOW.lead}</p>
+        </header>
+        <ol className="flow">
+          {WORKFLOW.steps.map((step, i) => (
+            <li key={step.title} className="flow__step card--stitch" data-reveal>
+              <span className="step__n" aria-hidden="true">
+                {i + 1}
+              </span>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+              <a href={step.link} className="flow__link">
+                {step.linkText}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+export function Segments() {
+  return (
+    <section id="who" className="section segments" aria-labelledby="who-title">
+      <div className="wrap">
+        <header className="section__head" data-reveal>
+          <p className="kicker">Who it is for</p>
+          <h2 id="who-title">Built for fashion businesses, small and growing.</h2>
+        </header>
+        <ul className="link-cards link-cards--four">
+          {Object.entries(SEGMENTS).map(([key, s]) => (
+            <li key={key} className="link-card" data-reveal>
+              <h3>
+                <a href={s.path}>{s.kicker.replace(/^For /, 'Threadé for ')}</a>
+              </h3>
+              <p>{s.card}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+export function AboutTeaser() {
+  return (
+    <section className="section about-teaser" aria-labelledby="about-title">
+      <div className="wrap about-teaser__grid" data-reveal>
+        <div>
+          <p className="kicker">About</p>
+          <h2 id="about-title">{ABOUT.title}</h2>
+        </div>
+        <div>
+          {ABOUT.body.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+          <a href="/about">More about Threadé, your data and how to reach us</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function GuidesTeaser() {
+  return (
+    <section className="section" aria-labelledby="guides-title">
+      <div className="wrap">
+        <header className="section__head" data-reveal>
+          <p className="kicker">Guides</p>
+          <h2 id="guides-title">Practical help for running your business.</h2>
+        </header>
+        <ul className="link-cards link-cards--four">
+          {GUIDES.map((g) => (
+            <li key={g.slug} className="link-card" data-reveal>
+              <h3>
+                <a href={`/guides/${g.slug}`}>{g.title}</a>
+              </h3>
+              <p>{g.short}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
