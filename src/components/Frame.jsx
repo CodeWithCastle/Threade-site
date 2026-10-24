@@ -203,7 +203,7 @@ export function Footer() {
           <a href="/features">Features</a>
           <a href="/pricing">Pricing</a>
           <a href="/guides">Guides</a>
-          <a href="/#faq">FAQ</a>
+          <a href="/faq">FAQ</a>
           <a href={SIGN_IN_URL}>Sign in</a>
         </nav>
         <nav aria-label="Who it is for" className="footer__col">

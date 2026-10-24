@@ -17,6 +17,7 @@ import {
 import { Laptop, Phone } from './Shot';
 import Tape from './Tape';
 import { GUIDES } from '../guides';
+import { FIT } from '../answers';
 
 export function Hero() {
   return (
@@ -277,8 +278,7 @@ export function Faq() {
           <p className="kicker">Questions</p>
           <h2 id="faq-title">Good to know.</h2>
           <p className="section__lead">
-            More answers are inside the app, under More, FAQ. Still stuck? Read our <a href="/guides">guides</a> or{' '}
-            <a href="/about">contact us</a>.
+            <a href="/faq">See every question and answer</a>, read our <a href="/guides">guides</a> or <a href="/about">contact us</a>.
           </p>
         </header>
         <div className="faq__list">
@@ -373,7 +373,7 @@ export function GuidesTeaser() {
           <h2 id="guides-title">Practical help for running your business.</h2>
         </header>
         <ul className="link-cards link-cards--four">
-          {GUIDES.map((g) => (
+          {[...GUIDES.slice(-1), ...GUIDES.slice(0, 3)].map((g) => (
             <li key={g.slug} className="link-card" data-reveal>
               <h3>
                 <a href={`/guides/${g.slug}`}>{g.title}</a>
@@ -382,6 +382,41 @@ export function GuidesTeaser() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+// Who Threadé suits and what it does not do: honest, so people (and assistants) can tell
+// at once whether it fits.
+export function Fit({ headingLevel = 2 }) {
+  const H = `h${headingLevel}`;
+  const Sub = `h${headingLevel + 1}`;
+  return (
+    <section id="fit" className="section fit" aria-labelledby="fit-title">
+      <div className="wrap">
+        <header className="section__head" data-reveal>
+          <p className="kicker">Is it right for you?</p>
+          <H id="fit-title">Who Threadé suits, and what it does not do.</H>
+        </header>
+        <div className="fit__grid">
+          <div className="fit__col card--stitch" data-reveal>
+            <Sub>A good fit for</Sub>
+            <ul className="ticks">
+              {FIT.bestFor.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="fit__col card--stitch" data-reveal>
+            <Sub>Not what it does today</Sub>
+            <ul className="crosses">
+              {FIT.notFor.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );

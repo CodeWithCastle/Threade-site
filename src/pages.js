@@ -63,6 +63,14 @@ export const PAGES = [
     { crumb: 'Pricing' }
   ),
   page(
+    '/faq',
+    'faq',
+    'Threadé FAQ: questions about the tailoring app, answered',
+    'Every question about Threadé answered: what it is, price, countries, offline use, measurements, orders, payments, invoices, team roles, data and backups.',
+    '2026-10-24',
+    { crumb: 'FAQ' }
+  ),
+  page(
     '/about',
     'about',
     'About Threadé: who we are and why we built it',
@@ -74,7 +82,7 @@ export const PAGES = [
     '/guides',
     'guides',
     'Guides for running a tailoring or fashion business | Threadé',
-    'Practical guides for tailors, fashion designers and shop owners: measurements, deposits and balances, production with a team, and stock control.',
+    'Practical guides for tailors, fashion designers and shop owners: measurements, deposits and balances, production with a team, stock control and choosing an app.',
     '2026-10-24',
     { crumb: 'Guides' }
   ),

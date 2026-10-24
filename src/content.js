@@ -23,7 +23,7 @@ export const NAV = [
   { href: '/#workflow', label: 'How it works' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/guides', label: 'Guides' },
-  { href: '/#faq', label: 'FAQ' },
+  { href: '/faq', label: 'FAQ' },
 ];
 
 export const HERO = {
