@@ -1,14 +1,12 @@
-import { useEffect } from 'react';
 import { LEGAL, TEAM_EMAIL } from '../content';
+import { Breadcrumbs } from './Common';
 
 // The website's own privacy note: the waitlist form only. The app has its own Privacy Notice.
 export default function PrivacyPage() {
-  useEffect(() => {
-    document.title = 'Website privacy: Threadé';
-  }, []);
   return (
     <main id="main" className="section prose-page">
       <div className="wrap prose">
+        <Breadcrumbs items={[{ label: 'Website privacy' }]} />
         <p className="kicker">Website privacy</p>
         <h1>How this website uses your details</h1>
         <p className="muted">In force from 15 October 2026.</p>

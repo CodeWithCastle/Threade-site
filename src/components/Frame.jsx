@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { COUNTRIES, FOOTER, LEGAL, NAV, SIGN_IN_URL, SIGN_UP_URL, SUPPORT_EMAIL, TEAM_EMAIL, WAITLIST } from '../content';
+import { AUDIENCE, COUNTRIES, FOOTER, LEGAL, NAV, SIGN_IN_URL, SIGN_UP_URL, SUPPORT_EMAIL, TEAM_EMAIL, WAITLIST } from '../content';
 import { ALREADY, DONE, joinWaitlist, validateWaitlist } from '../waitlist';
 import Mark from './Mark';
 
@@ -200,10 +200,19 @@ export function Footer() {
         </div>
         <nav aria-label="Product" className="footer__col">
           <p className="footer__title">Product</p>
-          <a href="/#features">Features</a>
-          <a href="/#plans">Plans</a>
+          <a href="/features">Features</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/guides">Guides</a>
           <a href="/#faq">FAQ</a>
           <a href={SIGN_IN_URL}>Sign in</a>
+        </nav>
+        <nav aria-label="Who it is for" className="footer__col">
+          <p className="footer__title">Who it is for</p>
+          {AUDIENCE.map((a) => (
+            <a key={a.href} href={a.href}>
+              {a.label}
+            </a>
+          ))}
         </nav>
         <nav aria-label="Legal" className="footer__col">
           <p className="footer__title">Legal</p>
@@ -214,12 +223,13 @@ export function Footer() {
         </nav>
         <div className="footer__col">
           <p className="footer__title">Contact</p>
+          <a href="/about">About Threadé</a>
           <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
           <a href={`mailto:${TEAM_EMAIL}`}>{TEAM_EMAIL}</a>
         </div>
       </div>
       <div className="wrap footer__base">
-        <p>
+        <p suppressHydrationWarning>
           © {year} Threadé. {FOOTER.line}
         </p>
         <p>Screens show sample data.</p>

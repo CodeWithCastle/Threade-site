@@ -1,6 +1,10 @@
 # Threadé website: rules for every change
 
-Public site for Threadé (React 19, Create React App, plain CSS in `src/index.css`, text in `src/content.js`).
+Public site for Threadé (React 19, Create React App, plain CSS in `src/index.css`, text in `src/content.js` and guides in `src/guides.js`).
+
+- Pages: every public page is listed in `src/pages.js` (address, title, description, date). `scripts/prerender.js` (postbuild) writes each one as its own HTML file with the content already in it, plus `404.html` and `sitemap.xml`; the browser then hydrates it. Vercel serves them with `cleanUrls` and no catch-all rewrite, so unknown addresses get a real 404. A new page needs an entry in `src/pages.js` and a case in `src/App.jsx`.
+- Search: titles and descriptions unique per page; structured data (`src/seo.js`) says only what is true (no ratings, no prices that are not public). `public/robots.txt` keeps every page open to search engines and OAI-SearchBot.
+- Markup must render the same on the server and in the browser: no `window`, `document` or dates of "now" during render, no inline `style` (the CSP refuses it in the HTML).
 
 - Facts must match the app (plans, FAQ, legal documents, pilot date). Never invent prices, numbers or claims; ask.
 - User-facing text: short, plain English, no em dashes.

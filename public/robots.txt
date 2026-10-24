@@ -1,2 +1,12 @@
+# Threadé website (www.threade.app). Every public page is open to search engines and to
+# AI search crawlers such as OAI-SearchBot (ChatGPT search). /api/ is the waitlist form's
+# server function, not a page.
 User-agent: *
 Allow: /
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.threade.app/sitemap.xml

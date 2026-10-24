@@ -1,0 +1,27 @@
+# Threadé
+
+> Threadé (also written Threade) is an app for tailors, fashion designers, ateliers, boutiques and other small shops. It keeps clients, measurements, orders, production, payments, store stock, invoices, expenses and finance in one place, shared with the business's team. It works offline and installs from the browser on Android, iPhone, Windows and Mac.
+
+- Measurements are kept as dated versions; each order keeps the version it was made with.
+- Plans: Free (1 person), Pro (3 people) and Business (10 people). Pro and Business prices are to be announced. During the pilot, until 30 November 2026, every business has all of Business free.
+- Available to businesses in Nigeria, the United Kingdom, Ghana, Kenya, South Africa, Ireland, Canada and the United States, each in its own currency.
+- Data is kept on the team's devices and on servers in the European Union (Ireland).
+- Provided by Dan Aremu, a sole trader trading as Threadé. Contact: support@threade.app, team@threade.app.
+
+## Pages
+
+- [Home](https://www.threade.app/): what Threadé does, how an order moves through it, plans and FAQ
+- [Features](https://www.threade.app/features): every feature in detail
+- [For tailors](https://www.threade.app/tailors)
+- [For fashion designers and ateliers](https://www.threade.app/fashion-designers)
+- [For boutiques](https://www.threade.app/boutiques)
+- [For small shops](https://www.threade.app/small-business)
+- [Pricing](https://www.threade.app/pricing): plans compared in full
+- [About](https://www.threade.app/about): who provides Threadé, data and contact
+
+## Guides
+
+- [How to take and record client measurements](https://www.threade.app/guides/taking-client-measurements)
+- [Deposits, part payments and balances](https://www.threade.app/guides/deposits-and-balances)
+- [A tailoring order workflow with a team](https://www.threade.app/guides/tailoring-order-workflow)
+- [Stock control for boutiques and small shops](https://www.threade.app/guides/stock-for-small-shops)
