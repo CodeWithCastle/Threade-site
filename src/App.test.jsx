@@ -15,7 +15,7 @@ afterEach(() => {
 describe('home page', () => {
   it('leads with the promise and sends Start free to the app sign-up', () => {
     render(<App path="/" />);
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Run your tailoring business from one app.');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Run your shop or business from one app.');
     const start = screen.getAllByRole('link', { name: 'Start free' });
     expect(start.length).toBeGreaterThan(1);
     start.forEach((link) => expect(link).toHaveAttribute('href', 'https://app.threade.app/signup'));

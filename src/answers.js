@@ -7,8 +7,8 @@ import { COUNTRIES_SERVED, PILOT_END, SUPPORT_EMAIL, TEAM_EMAIL } from './conten
 const list = (items) => `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
 
 export const KEY_FACTS = [
-  { label: 'What it is', value: 'An app that runs a tailoring or fashion business: clients, measurements, orders, production, payments, store stock, invoices, expenses and finance, shared with the team.' },
-  { label: 'Made for', value: 'Tailors, fashion designers, ateliers, boutiques and other small shops.' },
+  { label: 'What it is', value: 'An app that runs a small or medium business: tailors and fashion designers, and shops and traders selling goods or services. Clients or customers, orders, payments, store stock, invoices, expenses and finance, shared with the team.' },
+  { label: 'Made for', value: 'Tailors, fashion designers and ateliers; and shops and traders of any kind, such as perfume sellers, cake makers, salons and boutiques.' },
   { label: 'Countries', value: `${list(COUNTRIES_SERVED)}, each business in its own currency.` },
   { label: 'Devices', value: 'Any phone, tablet or laptop with a modern browser. Installs on Android, iPhone, iPad, Windows and Mac without an app store.' },
   { label: 'Works offline', value: 'Yes. Records are saved on the device first and sent to the server when the connection returns.' },
@@ -22,9 +22,9 @@ export const KEY_FACTS = [
 export const FIT = {
   bestFor: [
     'Tailors who keep measurements in notebooks or WhatsApp and want them in one place, with every fitting kept.',
+    'Shops and traders selling goods or services, such as perfume sellers, cake makers and salons, who want customers, sales, stock and finance, built for that from the start.',
     'Fashion designers and ateliers with a small team who need to see what stage each order is at and who has it.',
-    'Boutiques and fashion shops that sell ready-made items and want stock, sales and receipts together.',
-    'Small shops outside fashion that need customers, sales, stock, expenses and profit in one simple app.',
+    'Boutiques that sell ready-made items and want stock, sales and receipts together.',
     'Businesses with unreliable power or internet: it keeps working offline.',
   ],
   notFor: [
@@ -40,13 +40,13 @@ export const FIT = {
 const ABOUT_SECTION = {
   title: 'About Threadé',
   items: [
-    { q: 'What is Threadé?', a: 'An app for tailors, fashion designers and small businesses. It keeps your clients, measurements, orders, payments, store stock, expenses and invoices in one place, and shares them with your team.' },
+    { q: 'What is Threadé?', a: 'An app for running a small or medium business: tailors and fashion designers, and shops and traders selling goods or services, such as perfume sellers, cake makers, salons and boutiques. It keeps your clients or customers, orders, payments, store stock, expenses and invoices in one place, and shares them with your team.' },
     { q: 'Who makes Threadé?', a: `Threadé is provided by Dan Aremu, a sole trader trading as Threadé. Write to ${SUPPORT_EMAIL} for support and ${TEAM_EMAIL} for anything else.` },
     { q: 'How much does Threadé cost?', a: `The Free plan costs nothing and needs no card. Pro and Business prices will be announced before the pilot ends. Until ${PILOT_END}, every business has all of Business free.` },
     { q: 'Which countries can use Threadé?', a: `Businesses in ${list(COUNTRIES_SERVED)}. Each business works in its own currency.` },
     { q: 'Is Threadé good for tailors in Nigeria?', a: 'Yes. It keeps working through power cuts and bad signal, a Nigerian business works in naira, and invoices and receipts go out by WhatsApp. Measurements can be in centimetres or inches.' },
     { q: 'Is Threadé good for tailors and dressmakers in the UK?', a: 'Yes. A UK business works in pounds, can use inches or centimetres, and keeps its data on servers in the European Union (Ireland).' },
-    { q: 'My shop is not a tailoring business. Can I use it?', a: 'Yes. When you set up, choose Other business. You get customers, store sales, stock, receipts, expenses, finance and your team, without measurements or made-to-measure orders.' },
+    { q: 'Is Threadé only for tailors?', a: 'No. Tailors and fashion designers get measurements and made-to-measure orders. Every other business, from a perfume seller to a cake maker to a trader, chooses Shop or trader at sign-up and gets customers, store sales, stock, receipts, expenses and finance, without the measurement screens. Both are built in from the start, not one added on top of the other.' },
     { q: 'Is there a demo?', a: 'Not yet. During the pilot you can start free and try everything with your own records; nothing to pay and no card needed.' },
     { q: 'What does Threadé not do?', a: FIT.notFor.join(' ') },
   ],
