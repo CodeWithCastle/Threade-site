@@ -10,9 +10,9 @@ export const PAGES = [
   page(
     '/',
     'home',
-    'Threadé: tailoring app for clients, measurements and orders',
-    'Run your tailoring or fashion business from one app: clients, measurements, orders, production, payments, stock and invoices. Works offline. Free during the pilot.',
-    '2026-10-24'
+    'Threadé: app for tailors, shops and traders',
+    'Run your tailoring, shop or trading business from one app: clients or customers, orders, payments, stock and invoices. Works offline. Free during the pilot.',
+    '2026-10-29'
   ),
   page(
     '/features',
@@ -41,7 +41,7 @@ export const PAGES = [
   page(
     SEGMENTS.boutiques.path,
     'segment',
-    'Boutique sales and stock app for fashion shops | Threadé',
+    'Boutique and shop sales and stock app | Threadé',
     'Sales, stock and client records for boutiques: low-stock warnings, sales to clients or walk-ins, price rules, receipts by WhatsApp, and what sells.',
     '2026-10-24',
     { segment: 'boutiques', crumb: 'Boutiques' }
@@ -49,10 +49,10 @@ export const PAGES = [
   page(
     SEGMENTS['small-business'].path,
     'segment',
-    'Sales, stock and records app for small shops | Threadé',
-    'A simple app for small shops: customer records, sales, stock, receipts, expenses and profit, with roles for your team. Works offline on any device.',
-    '2026-10-24',
-    { segment: 'small-business', crumb: 'Small shops' }
+    'App for shops and traders: sales, stock and records | Threadé',
+    'An app for shops and traders of any kind, from perfume sellers to cake makers: customer records, sales, stock, receipts, expenses and profit. Works offline on any device.',
+    '2026-10-29',
+    { segment: 'small-business', crumb: 'Shops and traders' }
   ),
   page(
     '/pricing',
@@ -65,7 +65,7 @@ export const PAGES = [
   page(
     '/faq',
     'faq',
-    'Threadé FAQ: questions about the tailoring app, answered',
+    'Threadé FAQ: questions about the app, answered',
     'Every question about Threadé answered: what it is, price, countries, offline use, measurements, orders, payments, invoices, team roles, data and backups.',
     '2026-10-24',
     { crumb: 'FAQ' }
@@ -74,14 +74,14 @@ export const PAGES = [
     '/about',
     'about',
     'About Threadé: who we are and why we built it',
-    'Threadé brings a tailoring or fashion business’s clients, measurements, orders and payments into one app. Who provides it, where data is kept and how to reach us.',
-    '2026-10-24',
+    'Threadé brings a small business’s clients or customers, orders, stock and payments into one app, for tailors and for shops and traders alike. Who provides it.',
+    '2026-10-29',
     { crumb: 'About' }
   ),
   page(
     '/guides',
     'guides',
-    'Guides for running a tailoring or fashion business | Threadé',
+    'Guides for running a tailoring, shop or trading business | Threadé',
     'Practical guides for tailors, fashion designers and shop owners: measurements, deposits and balances, production with a team, stock control and choosing an app.',
     '2026-10-24',
     { crumb: 'Guides' }
