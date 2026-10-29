@@ -20,8 +20,8 @@ const organization = () => ({
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/logo512.png`,
   email: TEAM_EMAIL,
-  description: 'Threadé makes an app that runs tailoring, fashion and small retail businesses.',
-  knowsAbout: ['Tailoring business management', 'Client measurements', 'Made-to-measure orders', 'Fashion production', 'Retail stock control'],
+  description: 'Threadé makes an app that runs tailoring and fashion businesses, and shops and trading businesses of every kind.',
+  knowsAbout: ['Small business management', 'Tailoring business management', 'Client measurements', 'Made-to-measure orders', 'Fashion production', 'Retail stock control'],
   founder: { '@type': 'Person', name: 'Dan Aremu' },
   contactPoint: [{ '@type': 'ContactPoint', contactType: 'customer support', email: SUPPORT_EMAIL, availableLanguage: 'English' }],
 });
@@ -36,13 +36,13 @@ const application = () => ({
   alternateName: 'Threade',
   url: `${SITE_URL}/`,
   applicationCategory: 'BusinessApplication',
-  applicationSubCategory: 'Tailoring and fashion business management',
+  applicationSubCategory: 'Small business, tailoring and fashion business management',
   operatingSystem: 'Web browser, Android, iOS, Windows, macOS',
   description: PAGES[0].description,
   image: `${SITE_URL}/og-image.png`,
   screenshot: FEATURES.map((f) => `${SITE_URL}/shots/${f.image}@2x.webp`),
   featureList: FEATURES.map((f) => `${f.title}: ${f.short}`).concat(['Works offline', 'Installs from the browser', 'Backup and restore']),
-  audience: { '@type': 'BusinessAudience', audienceType: 'Tailors, fashion designers, ateliers, boutiques and small shops' },
+  audience: { '@type': 'BusinessAudience', audienceType: 'Tailors, fashion designers and ateliers, and shops and traders of any kind, such as perfume sellers, cake makers, salons and boutiques' },
   areaServed: COUNTRIES_SERVED.map((c) => ({ '@type': 'Country', name: c.replace(/^the /, '') })),
   inLanguage: 'en',
   isAccessibleForFree: true,
@@ -141,7 +141,7 @@ export function llmsTxt() {
   const guides = GUIDES.map((g) => `- [${g.title}](${url(`/guides/${g.slug}`)}): ${g.short}`).join('\n');
   return `# Threadé
 
-> Threadé (also written Threade) is an app for tailors, fashion designers, ateliers, boutiques and other small shops. It keeps clients, measurements, orders, production, payments, store stock, invoices, expenses and finance in one place, shared with the team, and works offline.
+> Threadé (also written Threade) is an app for tailors and fashion designers, and for shops and traders of any kind, such as perfume sellers, cake makers and salons. It keeps clients or customers, measurements where they apply, orders, production, payments, store stock, invoices, expenses and finance in one place, shared with the team, and works offline.
 
 ${facts}
 

@@ -28,8 +28,8 @@ export const NAV = [
 
 export const HERO = {
   eyebrow: `Pilot open: free until ${PILOT_END}`,
-  title: ['Run your tailoring business', 'from one app.'],
-  lead: 'Threadé keeps your clients, measurements, orders, production, payments, store stock and invoices in one place, shared with your team. It works without internet, on any phone or laptop.',
+  title: ['Run your shop or business', 'from one app.'],
+  lead: 'Threadé keeps your clients or customers, orders, payments, stock and invoices in one place, shared with your team. Built for tailors and fashion designers, and for shops and traders of every kind, from perfume sellers to cake makers. It works without internet, on any phone or laptop.',
   primary: 'Start free',
   secondary: 'See how it works',
   proof: ['Works offline', 'Installs on any phone', 'Data kept in the EU'],
@@ -44,7 +44,7 @@ export const AUDIENCE = [
   { href: '/tailors', label: 'Tailors' },
   { href: '/fashion-designers', label: 'Fashion designers and ateliers' },
   { href: '/boutiques', label: 'Boutiques' },
-  { href: '/small-business', label: 'Small shops' },
+  { href: '/small-business', label: 'Shops and traders' },
 ];
 
 export const FEATURES = [
@@ -161,7 +161,7 @@ export const PLANS_NOTE = `During the pilot every business has all of Business, 
 
 // From the app's FAQ (faq.content.js), shortened where needed.
 export const FAQ = [
-  { q: 'What is Threadé?', a: 'An app for tailors, fashion designers and small businesses. It keeps your clients, measurements, orders, payments, store stock, expenses and invoices in one place, and shares them with your team.' },
+  { q: 'What is Threadé?', a: 'An app for running a small or medium business: tailors and fashion designers, and shops and traders selling goods or services, such as perfume sellers, cake makers, salons and boutiques. It keeps your clients or customers, orders, payments, store stock, expenses and invoices in one place, and shares them with your team.' },
   { q: 'Do I need to download it from an app store?', a: 'No. Open Threadé in your browser, sign in once, then add it to your home screen or dock. It gets its own icon and opens full screen.' },
   { q: 'Does it work without internet?', a: 'Yes. Everything you add is saved on your device first. When the connection comes back, your changes are sent to the server and your team sees them. Signing up, inviting people and sharing links need the internet.' },
   { q: 'Where is my data kept?', a: 'On the devices of your team and on secure servers in the European Union (Ireland). Only people in your business can see it.' },
@@ -171,7 +171,7 @@ export const FAQ = [
   { q: 'What happens when the pilot ends?', a: `The pilot is free until ${PILOT_END}. Before then you choose Free, Pro or Business. Free needs no payment details; nothing you recorded is deleted on any plan.` },
   { q: 'How do I back up my data?', a: 'The admin downloads one file with everything, any time, on every plan. Restoring asks for the admin’s password.' },
   { q: 'Which countries can use Threadé?', a: `Businesses in ${COUNTRIES_SERVED.slice(0, -1).join(', ')} and ${COUNTRIES_SERVED[COUNTRIES_SERVED.length - 1]}. Each business works in its own currency.` },
-  { q: 'My shop is not a tailoring business. Can I use it?', a: 'Yes. When you set up, choose Other business. You get customers, store sales, stock, receipts, expenses, finance and your team, without measurements or made-to-measure orders.' },
+  { q: 'Is Threadé only for tailors?', a: 'No. Tailors and fashion designers get measurements and made-to-measure orders. Every other business, from a perfume seller to a cake maker to a trader, chooses Shop or trader at sign-up and gets customers, store sales, stock, receipts, expenses and finance, without the measurement screens. Both are built in from the start, not one added on top of the other.' },
   { q: 'Is there a demo?', a: 'Not yet. During the pilot you can start free and try everything with your own records; nothing to pay and no card needed.' },
 ];
 
@@ -248,7 +248,7 @@ export const SEGMENTS = {
   },
   boutiques: {
     path: '/boutiques',
-    kicker: 'For boutiques and fashion shops',
+    kicker: 'For boutiques and shops',
     title: 'Sales and stock for your boutique, with clients you remember.',
     lead: 'Track what is on the rail, sell to clients or walk-ins, and see what sells. Threadé keeps your stock, sales, receipts and client records together, with or without made-to-measure work.',
     card: 'Stock, sales, receipts and price rules for shops.',
@@ -266,13 +266,13 @@ export const SEGMENTS = {
   },
   'small-business': {
     path: '/small-business',
-    kicker: 'For small shops',
-    title: 'A simple sales, stock and records app for small shops.',
-    lead: 'Threadé is built for fashion businesses, and it also works for other small shops. Choose Other business when you set up and you get customers, sales, stock, receipts, expenses and finance, without the tailoring screens.',
-    card: 'Customers, sales, stock and finance for any small shop.',
+    kicker: 'For shops and traders',
+    title: 'Clients, stock, sales and money, for any shop or trade.',
+    lead: 'Threadé is built for shops and traders as much as for tailors: perfume and cosmetics sellers, bakers and cake makers, salons, and any small or medium business selling goods or services. Choose Shop or trader when you set up and you get customers, sales, stock, receipts, expenses and finance, built for exactly that, not a tailoring app with corners cut.',
+    card: 'Customers, sales, stock and finance for any shop or trade.',
     problems: [
       { title: 'Customer records in one place', body: 'Keep each customer’s contact details and notes, and see what they bought and what they owe.' },
-      { title: 'Sales and stock that stay in step', body: 'Every sale takes the items out of stock. Restock and adjust with a reason, and get a warning when something runs low.' },
+      { title: 'Sales and stock that stay in step', body: 'Every sale takes the items out of stock. Restock and adjust with a reason, and get a warning when something runs low, whether you are tracking bottles of perfume or finished cakes.' },
       { title: 'Receipts and invoices', body: 'Share receipts and invoices with your business details by WhatsApp or email.' },
       { title: 'Expenses and profit', body: 'Record expenses by category and see sales, costs, profit and money owed by week, month or year.' },
       { title: 'Records you can rely on', body: 'Nothing disappears: a payment is voided with a reason, not deleted, and the change log shows who did what and when.' },
@@ -287,8 +287,8 @@ export const SEGMENTS = {
 export const ABOUT = {
   title: 'Why Threadé exists',
   body: [
-    'In most tailoring businesses the information is everywhere: clients in WhatsApp, measurements in a notebook, orders in someone’s head and balances in a spreadsheet. Past measurements are hard to find and client history is lost between orders.',
-    'Threadé brings it into one place. The client is at the centre, measurements are kept as dated versions so every order uses the right ones, and the whole team works from the same records, even without internet.',
+    'In most small businesses the information is everywhere: clients or customers in WhatsApp, orders in someone’s head, stock in a notebook and balances in a spreadsheet. For a tailor, measurements get lost in the mix too, and client history is lost between orders.',
+    'Threadé brings it into one place, for a tailor or fashion designer and for a shop or trader selling goods or services. The client or customer is at the centre, a tailor’s measurements are kept as dated versions so every order uses the right ones, and the whole team works from the same records, even without internet.',
   ],
   who: 'Threadé is provided by Dan Aremu, a sole trader trading as Threadé.',
 };
