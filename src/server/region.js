@@ -14,7 +14,11 @@ function handleRegion(req, res, { headers } = {}) {
     return res.end(JSON.stringify({ error: 'Use GET.' }));
   }
   const source = headers ?? req.headers ?? {};
-  const country = String(source['x-vercel-ip-country'] ?? '').trim().toUpperCase();
+  // Vercel sets this header and overwrites anything a client sends, but the
+  // function answers on its own address too, where the header is whatever the
+  // caller wrote. Only a two-letter country code is ever echoed back.
+  const claimed = String(source['x-vercel-ip-country'] ?? '').trim().toUpperCase();
+  const country = /^[A-Z]{2}$/.test(claimed) ? claimed : '';
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');

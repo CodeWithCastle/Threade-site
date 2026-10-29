@@ -47,6 +47,14 @@ describe('GET /api/region', () => {
     expect(answer.headers['Cache-Control']).toBe('no-store');
   });
 
+  it('echoes nothing but a two-letter country code', () => {
+    // The function answers on its own address too, where the header is
+    // whatever the caller wrote.
+    expect(get({ 'x-vercel-ip-country': '<script>alert(1)</script>' }).json).toEqual({ country: null, currency: 'USD' });
+    expect(get({ 'x-vercel-ip-country': 'NIGERIA' }).json).toEqual({ country: null, currency: 'USD' });
+    expect(get({ 'x-vercel-ip-country': 'N1' }).json).toEqual({ country: null, currency: 'USD' });
+  });
+
   it('refuses anything but GET', () => {
     const r = res();
     handleRegion({ method: 'POST', headers: {} }, r);
