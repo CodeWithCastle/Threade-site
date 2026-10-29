@@ -85,7 +85,7 @@ describe('public pages', () => {
   it('the home page links each audience, the workflow and the guides with descriptive text', () => {
     render(<App path="/" />);
     expect(screen.getByRole('link', { name: 'See how it works' })).toHaveAttribute('href', '#workflow');
-    expect(screen.getByRole('region', { name: 'One order, from first fitting to delivery.' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'One job, from first contact to paid.' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Threadé for tailors' })).toHaveAttribute('href', '/tailors');
     expect(screen.getByRole('link', { name: 'Compare every plan in full' })).toHaveAttribute('href', '/pricing');
     expect(screen.queryByRole('link', { name: /^(click here|read more|here)$/i })).not.toBeInTheDocument();
