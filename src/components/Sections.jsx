@@ -17,6 +17,8 @@ import {
 import { Laptop, Phone } from './Shot';
 import Tape from './Tape';
 import { GUIDES } from '../guides';
+import { CURRENCIES, CURRENCY_CODES, priceNote, priceText } from '../pricing';
+import useCurrency from '../useCurrency';
 import { FIT } from '../answers';
 
 export function Hero() {
@@ -227,6 +229,7 @@ export function How() {
 }
 
 export function Plans() {
+  const [currency, chooseCurrency] = useCurrency();
   return (
     <section id="plans" className="section plans" aria-labelledby="plans-title">
       <div className="wrap">
@@ -234,6 +237,21 @@ export function Plans() {
           <p className="kicker">Plans</p>
           <h2 id="plans-title">Start free. Grow when you are ready.</h2>
           <p className="section__lead">{PLANS_NOTE}</p>
+          <fieldset className="plans__currency">
+            <legend>Show prices in</legend>
+            {CURRENCY_CODES.map((code) => (
+              <label key={code} className={currency === code ? 'is-on' : ''}>
+                <input
+                  type="radio"
+                  name="currency"
+                  value={code}
+                  checked={currency === code}
+                  onChange={() => chooseCurrency(code)}
+                />
+                {CURRENCIES[code].label} ({CURRENCIES[code].symbol})
+              </label>
+            ))}
+          </fieldset>
         </header>
         <div className="plans__grid">
           {PLANS.map((p) => (
@@ -241,8 +259,8 @@ export function Plans() {
               {p.highlight && <p className="plan__badge">Most teams start here</p>}
               <h3 id={`plan-${p.key}`}>{p.name}</h3>
               <p className="plan__for">{p.for}</p>
-              <p className="plan__price">{p.price}</p>
-              <p className="plan__note">{p.note}</p>
+              <p className="plan__price">{priceText(p.key, currency)}</p>
+              <p className="plan__note">{priceNote(p.key, currency)}</p>
               <ul className="ticks">
                 {p.features.map((f) => (
                   <li key={f}>{f}</li>

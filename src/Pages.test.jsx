@@ -51,12 +51,15 @@ describe('public pages', () => {
     });
   });
 
-  it('pricing compares every plan and invents no prices', () => {
+  it('pricing compares all four plans and shows the published prices', () => {
     render(<App path="/pricing" />);
     const table = screen.getByRole('table', { name: 'What each plan includes' });
+    expect(PLANS.map((p) => p.key)).toEqual(['free', 'starter', 'pro', 'business']);
     PLANS.forEach((p) => expect(within(table).getByRole('columnheader', { name: p.name })).toBeInTheDocument());
-    expect(within(table).getByRole('row', { name: /People 1 3 10/ })).toBeInTheDocument();
-    expect(screen.getByRole('main')).not.toHaveTextContent(/₦\d|£\d|\$\d|€\d/);
+    expect(within(table).getByRole('row', { name: /People 1 3 6 12/ })).toBeInTheDocument();
+    // Dollars until /api/region answers, which it does not in a test.
+    expect(screen.getByRole('main')).toHaveTextContent('$3.99');
+    expect(screen.getByRole('main')).not.toHaveTextContent(/₦\d|£\d|€\d/);
   });
 
   it('about shows who provides Threadé and how to reach us, without an invented address', () => {
@@ -82,7 +85,7 @@ describe('public pages', () => {
   it('the home page links each audience, the workflow and the guides with descriptive text', () => {
     render(<App path="/" />);
     expect(screen.getByRole('link', { name: 'See how it works' })).toHaveAttribute('href', '#workflow');
-    expect(screen.getByRole('region', { name: 'One order, from first fitting to delivery.' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'One job, from first contact to paid.' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Threadé for tailors' })).toHaveAttribute('href', '/tailors');
     expect(screen.getByRole('link', { name: 'Compare every plan in full' })).toHaveAttribute('href', '/pricing');
     expect(screen.queryByRole('link', { name: /^(click here|read more|here)$/i })).not.toBeInTheDocument();

@@ -10,16 +10,16 @@ export const PAGES = [
   page(
     '/',
     'home',
-    'Threadé: app for tailors, shops and traders',
-    'Run your tailoring, shop or trading business from one app: clients or customers, orders, payments, stock and invoices. Works offline. Free during the pilot.',
+    'Threadé: run your whole business from one app',
+    'Customers, orders, payments, stock, invoices and your team in one app. For shops and traders of every kind, and for tailors. Works offline. Free during the pilot.',
     '2026-10-29'
   ),
   page(
     '/features',
     'features',
-    'Threadé features: measurements, orders, stock and invoices',
-    'Every Threadé feature: versioned client measurements, orders and payments, a production board, store stock, invoices and receipts, finance, team roles and a change log.',
-    '2026-10-24',
+    'Threadé features: customers, orders, stock and invoices',
+    'Every Threadé feature: customers, orders and payments, stock, invoices, finance, team roles and a change log, plus measurements and production for made-to-measure work.',
+    '2026-10-29',
     { crumb: 'Features' }
   ),
   page(
@@ -50,24 +50,24 @@ export const PAGES = [
     SEGMENTS['small-business'].path,
     'segment',
     'App for shops and traders: sales, stock and records | Threadé',
-    'An app for shops and traders of any kind, from perfume sellers to cake makers: customer records, sales, stock, receipts, expenses and profit. Works offline on any device.',
+    'An app for shops and traders of any kind, from perfume sellers to cake makers: customers, sales, stock, receipts, expenses and profit. Works offline on any device.',
     '2026-10-29',
     { segment: 'small-business', crumb: 'Shops and traders' }
   ),
   page(
     '/pricing',
     'pricing',
-    'Threadé pricing: Free, Pro and Business plans',
-    'Compare the Threadé plans: Free for one person, Pro for you and up to 2 helpers, Business for teams of 10. Every business has all of Business free during the pilot.',
-    '2026-10-24',
+    'Threadé pricing: Free, Starter, Pro and Business',
+    'Compare the four Threadé plans: Free for one person, Starter for three, Pro for six, Business for twelve. All of Business is free during the pilot.',
+    '2026-10-29',
     { crumb: 'Pricing' }
   ),
   page(
     '/faq',
     'faq',
     'Threadé FAQ: questions about the app, answered',
-    'Every question about Threadé answered: what it is, price, countries, offline use, measurements, orders, payments, invoices, team roles, data and backups.',
-    '2026-10-24',
+    'Every question about Threadé answered: what it is, who it is for, price, countries, offline use, orders and payments, stock, invoices, team roles, data and backups.',
+    '2026-10-29',
     { crumb: 'FAQ' }
   ),
   page(
@@ -81,9 +81,9 @@ export const PAGES = [
   page(
     '/guides',
     'guides',
-    'Guides for running a tailoring, shop or trading business | Threadé',
-    'Practical guides for tailors, fashion designers and shop owners: measurements, deposits and balances, production with a team, stock control and choosing an app.',
-    '2026-10-24',
+    'Guides for running a small shop or workshop | Threadé',
+    'Practical guides: stock and prices, deposits and balances, cake and food orders, measurements, production with a team, and choosing an app.',
+    '2026-10-29',
     { crumb: 'Guides' }
   ),
   ...GUIDES.map((g) =>

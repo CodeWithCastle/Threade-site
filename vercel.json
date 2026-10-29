@@ -1,6 +1,13 @@
 {
   "installCommand": "npm ci --ignore-scripts",
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/guides/choosing-a-tailoring-app",
+      "destination": "/guides/choosing-a-business-app",
+      "permanent": true
+    }
+  ],
   "trailingSlash": false,
   "headers": [
     {

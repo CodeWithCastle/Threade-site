@@ -23,11 +23,13 @@ describe('page heads and structured data', () => {
     expect(headFor(NOT_FOUND)).toMatchObject({ canonical: null, robots: 'noindex', jsonLd: null });
   });
 
-  it('says only what is true: no ratings or reviews, and the only price is the Free plan at 0', () => {
+  it('says only what is true: no ratings or reviews, and the prices are the published ones', () => {
+    const published = ['0.00', '3.99', '7.99', '14.99'];
     PAGES.forEach((p) => {
       const text = JSON.stringify(structuredData(p));
       expect(text).not.toMatch(/aggregateRating|"review"|ratingValue/i);
-      for (const [, price] of text.matchAll(/"price":"([^"]*)"/g)) expect(price).toBe('0');
+      for (const [, price] of text.matchAll(/"price":"([^"]*)"/g)) expect(published).toContain(price);
+      for (const [, currency] of text.matchAll(/"priceCurrency":"([^"]*)"/g)) expect(currency).toBe('USD');
     });
     const home = structuredData(pageFor('/'))['@graph'].map((n) => n['@type']);
     expect(home).toEqual(['Organization', 'WebSite', 'SoftwareApplication', 'WebPage']);
@@ -78,12 +80,13 @@ describe('answers for AI assistants', () => {
     expect(text).not.toContain('—');
   });
 
-  it('llms-full.txt holds every feature, answer and guide, and no prices that are not public', () => {
+  it('llms-full.txt holds every feature, answer and guide, and the published dollar prices', () => {
     const text = llmsFullTxt();
     FEATURES.forEach((f) => expect(text).toContain(f.body));
     ALL_QUESTIONS.forEach((q) => expect(text).toContain(`Q: ${q.q}`));
     GUIDES.forEach((g) => expect(text).toContain(`### ${g.title}`));
-    expect(text).not.toMatch(/₦\d|£\d|\$\d|€\d/);
+    expect(text).toContain('Starter: $3.99 a month, or $39.90 a year');
+    expect(text).not.toMatch(/₦\d|£\d|€\d/);
     expect(text).not.toContain('—');
   });
 });
