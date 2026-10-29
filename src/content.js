@@ -28,8 +28,8 @@ export const NAV = [
 
 export const HERO = {
   eyebrow: `Pilot open: free until ${PILOT_END}`,
-  title: ['Run your shop or business', 'from one app.'],
-  lead: 'Threadé keeps your clients or customers, orders, payments, stock and invoices in one place, shared with your team. Built for tailors and fashion designers, and for shops and traders of every kind, from perfume sellers to cake makers. It works without internet, on any phone or laptop.',
+  title: ['Run your whole business', 'from one app.'],
+  lead: 'Customers, orders, payments, stock, invoices and your team, in one place and in step on every phone. Perfume sellers, cake makers, salons, boutiques, traders, tailors and fashion designers all run on Threadé. It works without internet, on any phone or laptop.',
   primary: 'Start free',
   secondary: 'See how it works',
   proof: ['Works offline', 'Installs on any phone', 'Data kept in the EU'],
@@ -41,54 +41,45 @@ export const COUNTRIES_SERVED = ['Nigeria', 'the United Kingdom', 'Ghana', 'Keny
 
 // Who Threadé is for. Each has its own page (src/pages.js).
 export const AUDIENCE = [
+  { href: '/small-business', label: 'Shops and traders' },
+  { href: '/boutiques', label: 'Boutiques' },
   { href: '/tailors', label: 'Tailors' },
   { href: '/fashion-designers', label: 'Fashion designers and ateliers' },
-  { href: '/boutiques', label: 'Boutiques' },
-  { href: '/small-business', label: 'Shops and traders' },
 ];
 
 export const FEATURES = [
   {
     id: 'clients',
-    title: 'Clients and measurements',
-    short: 'Every client, every fitting.',
-    body: 'Keep contact details, notes and photos. Take measurements by body area, head to toe, and keep a new version at every fitting so you can compare with the last one. Add your own fields when your work needs them.',
-    points: ['Female and male lists, in centimetres or inches', 'Versions you can compare', 'Call or WhatsApp from the profile'],
-    image: 'phone-15-measurement',
-    alt: 'Measurements by body area, compared with the last fitting',
+    title: 'Customers and clients',
+    short: 'Everyone you sell to, in one place.',
+    body: 'Keep contact details, notes and photos for every person you sell to. See what they have bought, what they owe and when they last came in. Call or message them from their profile.',
+    points: ['Called customers or clients, whichever fits your business', 'What they bought and what they owe', 'Call or WhatsApp from the profile'],
+    image: 'phone-shop-home',
+    alt: 'A shop home screen with sales, stock and money owed',
   },
   {
     id: 'orders',
-    title: 'Orders and payments',
+    title: 'Orders, sales and payments',
     short: 'Know who owes what.',
-    body: 'Create made-to-measure orders linked to the right measurements. Take a deposit, record part payments and see the balance at a glance. Overdue and due-this-week orders come first.',
-    points: ['Deposits and part payments', 'Balances on every order and client', 'Voids need a reason, nothing disappears'],
+    body: 'Record a sale over the counter or an order to be delivered later. Take a deposit, record part payments and see the balance at a glance. Overdue and due-this-week come first.',
+    points: ['Deposits and part payments', 'Balances on every order and every customer', 'Voids need a reason, nothing disappears'],
     image: 'phone-21-order-detail',
-    alt: 'An order with payments, balance, production and documents',
-  },
-  {
-    id: 'production',
-    title: 'Production board',
-    short: 'Cutting, sewing, fitting, ready.',
-    body: 'See every open order by stage and who is working on it. Move an order to the next stage in one tap; the whole team sees it at once.',
-    points: ['Assign people to each stage', 'Due dates on every card', 'Filter to your own work'],
-    image: 'phone-27-production',
-    alt: 'Production board with orders by stage and who does each',
+    alt: 'An order with payments, balance and documents',
   },
   {
     id: 'store',
-    title: 'Store and sales',
-    short: 'Ready-made items, in stock.',
-    body: 'Sell ready-made items alongside your made-to-measure work. Track stock and sizes, restock, and get a warning when an item runs low. Sales team members sell at the set price; managers can discount within your limit.',
-    points: ['Stock and low-stock alerts', 'Sales to clients or walk-ins', 'Price rules you control'],
-    image: 'phone-31-store',
-    alt: 'Store items with stock levels',
+    title: 'Stock and selling',
+    short: 'What you hold, and what it is worth.',
+    body: 'Keep every item with its price and how many you hold, whether it is a bottle of perfume, a cake, a candle or a finished dress. Stock goes down with every sale, and you get a warning before something runs out.',
+    points: ['Low-stock warnings', 'Sales to customers or walk-ins', 'Price rules you control'],
+    image: 'phone-shop-store',
+    alt: 'Store items with prices and stock levels',
   },
   {
     id: 'documents',
     title: 'Invoices and receipts',
     short: 'Professional, in seconds.',
-    body: 'Invoices, receipts and delivery slips with your business details, ready to share as a PDF or an image by WhatsApp or email. Share a link your client can open without an app.',
+    body: 'Invoices, receipts and delivery slips with your business details, ready to share as a PDF or an image by WhatsApp or email. Share a link your customer can open without an app.',
     points: ['PDF or image', 'Share by WhatsApp or email', 'Links that expire after 14 days'],
     image: 'phone-25-invoice',
     alt: 'An invoice ready to share',
@@ -97,7 +88,7 @@ export const FEATURES = [
     id: 'finance',
     title: 'Finance and expenses',
     short: 'See how the business is doing.',
-    body: 'Sales, cash received, costs, profit, money owed and a tax estimate, by week, month or year. Record expenses and link them to orders. Download the numbers for your accountant.',
+    body: 'Sales, cash received, costs, profit, money owed and a tax estimate, by week, month or year. Record expenses and see them by category. Download the numbers for your accountant.',
     points: ['Profit and margin', 'Expenses by category', 'CSV and PDF downloads'],
     image: 'phone-40-finance',
     alt: 'Finance: sales, cash, costs, profit and debts',
@@ -111,7 +102,30 @@ export const FEATURES = [
     image: 'phone-55-team',
     alt: 'Team with roles and a pending invite',
   },
+  {
+    id: 'clients-measurements',
+    title: 'Measurements',
+    short: 'Every client, every fitting.',
+    madeToMeasure: true,
+    body: 'For businesses that make to measure. Take measurements by body area, head to toe, and keep a new version at every fitting so you can compare with the last one. Add your own fields when your work needs them.',
+    points: ['Female and male lists, in centimetres or inches', 'Versions you can compare', 'An order keeps the version it was made with'],
+    image: 'phone-15-measurement',
+    alt: 'Measurements by body area, compared with the last fitting',
+  },
+  {
+    id: 'production',
+    title: 'Production board',
+    short: 'Cutting, sewing, fitting, ready.',
+    madeToMeasure: true,
+    body: 'For businesses that make to measure. See every open order by stage and who is working on it. Move an order to the next stage in one tap; the whole team sees it at once.',
+    points: ['Assign people to each stage', 'Due dates on every card', 'Filter to your own work'],
+    image: 'phone-27-production',
+    alt: 'Production board with orders by stage and who does each',
+  },
 ];
+
+// Shown next to the features only made-to-measure businesses see.
+export const MADE_TO_MEASURE_NOTE = 'For tailoring and fashion';
 
 export const ALWAYS = [
   { title: 'Works offline', body: 'Everything is saved on your device first. No signal in the market? Keep working; changes go up when the connection returns.' },
@@ -229,23 +243,42 @@ export const FOOTER = {
   line: 'Threadé is provided by Dan Aremu, a sole trader trading as Threadé.',
 };
 
-// "How it works": one made-to-measure order from start to finish. Each step names a real feature.
+// "How it works": one job from first contact to paid, for any business. Steps that only
+// apply to made-to-measure work say so; every step names a real feature.
 export const WORKFLOW = {
   kicker: 'How it works',
-  title: 'One order, from first fitting to delivery.',
-  lead: 'Here is how a typical made-to-measure order moves through Threadé. Every step is a screen in the app today.',
+  title: 'One job, from first contact to paid.',
+  lead: 'A sale over the counter, or an order to collect next week. Here is how either moves through Threadé. Every step is a screen in the app today.',
   steps: [
-    { title: 'A client comes in', body: 'Add them with their phone number, notes and, with their permission, photos. Take their measurements by body area, head to toe.', link: '/features#clients', linkText: 'See clients and measurements' },
-    { title: 'You agree the order', body: 'Record the garment, the delivery date and the price, linked to the measurements you just took. Take a deposit and send the invoice by WhatsApp.', link: '/features#orders', linkText: 'See orders and payments' },
-    { title: 'The team makes it', body: 'The order joins the production board: cutting, sewing, fitting, ready. Each person sees what is theirs and moves it on with one tap.', link: '/features#production', linkText: 'See the production board' },
-    { title: 'Fitting and changes', body: 'Take new measurements at the fitting. They are saved as a new version, so the order keeps the measurements it was made with.', link: '/features#clients', linkText: 'See measurement versions' },
-    { title: 'Paid and delivered', body: 'Record each part payment. The balance updates at once, the client gets a receipt, and a delivery slip goes with the garment.', link: '/features#documents', linkText: 'See invoices and receipts' },
+    { title: 'Someone comes to buy', body: 'Add them with their phone number and notes, or sell to a walk-in without a record. Tailors and fashion designers also take measurements here, by body area, kept as a dated version.', link: '/features#clients', linkText: 'See customers and clients' },
+    { title: 'You agree what they are buying', body: 'Pick items from your stock, or record a made-to-measure order with its delivery date and price. Take a deposit and send the invoice by WhatsApp.', link: '/features#orders', linkText: 'See orders and payments' },
+    { title: 'Stock and work stay in step', body: 'A sale takes the items out of stock and warns you when something runs low. Made-to-measure work joins the production board instead: cutting, sewing, fitting, ready.', link: '/features#store', linkText: 'See stock and selling' },
+    { title: 'The balance comes in', body: 'Record each part payment. The balance updates at once on the order and on the customer, and overdue balances come first.', link: '/features#orders', linkText: 'See balances' },
+    { title: 'Paid and handed over', body: 'The customer gets a receipt, and a delivery slip goes with the goods. Both carry your business details and go out by WhatsApp or email.', link: '/features#documents', linkText: 'See invoices and receipts' },
     { title: 'You see the numbers', body: 'Sales, cash received, costs, profit and money owed, by week, month or year, ready for your accountant.', link: '/features#finance', linkText: 'See finance' },
   ],
 };
 
 // The audience pages. Facts only: every point is a feature the app has today.
 export const SEGMENTS = {
+  'small-business': {
+    path: '/small-business',
+    kicker: 'For shops and traders',
+    title: 'Clients, stock, sales and money, for any shop or trade.',
+    lead: 'Threadé is built for shops and traders as much as for tailors: perfume and cosmetics sellers, bakers and cake makers, salons, and any small or medium business selling goods or services. Choose Shop or trader when you set up and you get customers, sales, stock, receipts, expenses and finance, built for exactly that, not a tailoring app with corners cut.',
+    card: 'Customers, sales, stock and finance for any shop or trade.',
+    problems: [
+      { title: 'Customer records in one place', body: 'Keep each customer’s contact details and notes, and see what they bought and what they owe.' },
+      { title: 'Sales and stock that stay in step', body: 'Every sale takes the items out of stock. Restock and adjust with a reason, and get a warning when something runs low, whether you are tracking bottles of perfume or finished cakes.' },
+      { title: 'Receipts and invoices', body: 'Share receipts and invoices with your business details by WhatsApp or email.' },
+      { title: 'Expenses and profit', body: 'Record expenses by category and see sales, costs, profit and money owed by week, month or year.' },
+      { title: 'Records you can rely on', body: 'Nothing disappears: a payment is voided with a reason, not deleted, and the change log shows who did what and when.' },
+      { title: 'Works offline, on any device', body: 'Install it from the browser on Android, iPhone, Windows or Mac. It keeps working when the internet does not.' },
+    ],
+    image: 'phone-31-store',
+    alt: 'Store items with stock levels',
+    features: ['store', 'finance', 'team'],
+  },
   tailors: {
     path: '/tailors',
     kicker: 'For tailors',
@@ -299,24 +332,6 @@ export const SEGMENTS = {
     image: 'phone-31-store',
     alt: 'Store items with stock levels',
     features: ['store', 'documents', 'finance'],
-  },
-  'small-business': {
-    path: '/small-business',
-    kicker: 'For shops and traders',
-    title: 'Clients, stock, sales and money, for any shop or trade.',
-    lead: 'Threadé is built for shops and traders as much as for tailors: perfume and cosmetics sellers, bakers and cake makers, salons, and any small or medium business selling goods or services. Choose Shop or trader when you set up and you get customers, sales, stock, receipts, expenses and finance, built for exactly that, not a tailoring app with corners cut.',
-    card: 'Customers, sales, stock and finance for any shop or trade.',
-    problems: [
-      { title: 'Customer records in one place', body: 'Keep each customer’s contact details and notes, and see what they bought and what they owe.' },
-      { title: 'Sales and stock that stay in step', body: 'Every sale takes the items out of stock. Restock and adjust with a reason, and get a warning when something runs low, whether you are tracking bottles of perfume or finished cakes.' },
-      { title: 'Receipts and invoices', body: 'Share receipts and invoices with your business details by WhatsApp or email.' },
-      { title: 'Expenses and profit', body: 'Record expenses by category and see sales, costs, profit and money owed by week, month or year.' },
-      { title: 'Records you can rely on', body: 'Nothing disappears: a payment is voided with a reason, not deleted, and the change log shows who did what and when.' },
-      { title: 'Works offline, on any device', body: 'Install it from the browser on Android, iPhone, Windows or Mac. It keeps working when the internet does not.' },
-    ],
-    image: 'phone-31-store',
-    alt: 'Store items with stock levels',
-    features: ['store', 'finance', 'team'],
   },
 };
 
