@@ -128,36 +128,72 @@ export const STEPS = [
   { title: 'Bring your team', body: 'Invite people with a link and pick their role. They join on their own phone.' },
 ];
 
-// From the app's Compare plans page (plans.content.js). Limits may change before launch.
+// From the app's Compare plans page (plans.content.js). Four plans from 2026-11
+// (founder decisions 2026-10-28); the prices live in pricing.js.
 export const PLANS = [
   {
     key: 'free',
     name: 'Free',
-    price: 'Nothing to pay',
-    note: 'No card needed',
     for: 'One person getting organised',
-    features: ['1 person', 'Unlimited clients, orders and payments', '3 photos per client', '25 store items', '3 of your own measurement fields', 'Invoices and receipts', 'Finance for this and last month'],
+    features: [
+      '1 person',
+      'Unlimited clients, orders and payments',
+      '1 photo per client',
+      '15 store items',
+      '3 of your own measurement fields',
+      'Invoices and receipts',
+      'Finance for this and last month',
+      'Saved on the server once a day',
+    ],
+  },
+  {
+    key: 'starter',
+    name: 'Starter',
+    for: 'You and up to 2 helpers',
+    features: [
+      '3 people (admin and sales)',
+      'Assign people to stages',
+      '3 photos per client',
+      '30 store items',
+      '10 of your own measurement fields',
+      'Saved on the server at once',
+      '4 months of finance',
+      'Email support',
+    ],
   },
   {
     key: 'pro',
     name: 'Pro',
-    price: 'Price to be announced',
-    note: 'Before the pilot ends',
-    for: 'You and up to 2 helpers',
+    for: 'A growing workshop with a manager',
     highlight: true,
-    features: ['3 people (admin and sales)', 'Assign people to stages', '12 photos per client', 'Unlimited store items and fields', 'Share links to invoices and receipts', 'No "Made with Threadé" line', 'All finance periods, CSV and PDF', 'Full change log, email support'],
+    features: [
+      '6 people, every role',
+      'Everything in Starter',
+      '9 photos per client, 45 store items',
+      'Share links to invoices and receipts',
+      'No "Made with Threadé" line',
+      'New measurement categories',
+      '11 months of finance, CSV and PDF',
+      '12 months of change log',
+    ],
   },
   {
     key: 'business',
     name: 'Business',
-    price: 'Price to be announced',
-    note: 'Before the pilot ends',
     for: 'Ateliers and shops with managers',
-    features: ['10 people, every role', 'Managers and an accountant', 'Everything in Pro', 'Finance by team member', 'Priority support'],
+    features: [
+      '12 people, every role',
+      'Everything in Pro',
+      '15 photos per client, 80 store items',
+      'Finance by team member',
+      '24 months of finance',
+      'Full change log',
+      'Priority support',
+    ],
   },
 ];
 export const IN_EVERY_PLAN = ['Works offline', 'Sync across devices', 'Install on your phone', 'App lock with PIN', 'Recovery codes', 'Backup and restore'];
-export const PLANS_NOTE = `During the pilot every business has all of Business, free, until ${PILOT_END}. Before it ends you choose your plan; Free needs no payment details. Limits may change before launch.`;
+export const PLANS_NOTE = `During the pilot every business has all of Business, free, until ${PILOT_END}. Before it ends you choose your plan; Free needs no payment details. Prices are per business, not per person, and a year costs ten months.`;
 
 // From the app's FAQ (faq.content.js), shortened where needed.
 export const FAQ = [
@@ -168,7 +204,7 @@ export const FAQ = [
   { q: 'Who can do what?', a: 'Admin: everything, including team, backups and deleting the business. Manager: clients, orders, store, expenses and sales team members. Sales: clients, measurements, orders and, if allowed, store sales. Accountant: orders, store (view only), finance and expenses.' },
   { q: 'Do I need my clients’ permission?', a: 'Yes. When you set up the business you confirm that you tell your clients their details are kept in Threadé and keep them only with their permission.' },
   { q: 'Can I use inches instead of centimetres?', a: 'Yes. The admin chooses the unit. Measurements are shown in the unit you choose; nothing you recorded changes.' },
-  { q: 'What happens when the pilot ends?', a: `The pilot is free until ${PILOT_END}. Before then you choose Free, Pro or Business. Free needs no payment details; nothing you recorded is deleted on any plan.` },
+  { q: 'What happens when the pilot ends?', a: `The pilot is free until ${PILOT_END}. Before then you choose Free, Starter, Pro or Business. Free needs no payment details; nothing you recorded is deleted on any plan.` },
   { q: 'How do I back up my data?', a: 'The admin downloads one file with everything, any time, on every plan. Restoring asks for the admin’s password.' },
   { q: 'Which countries can use Threadé?', a: `Businesses in ${COUNTRIES_SERVED.slice(0, -1).join(', ')} and ${COUNTRIES_SERVED[COUNTRIES_SERVED.length - 1]}. Each business works in its own currency.` },
   { q: 'Is Threadé only for tailors?', a: 'No. Tailors and fashion designers get measurements and made-to-measure orders. Every other business, from a perfume seller to a cake maker to a trader, chooses Shop or trader at sign-up and gets customers, store sales, stock, receipts, expenses and finance, without the measurement screens. Both are built in from the start, not one added on top of the other.' },
@@ -222,7 +258,7 @@ export const SEGMENTS = {
       { title: 'Invoices and receipts your clients can open', body: 'Send an invoice or receipt with your business details as a PDF or an image by WhatsApp or email.' },
       { title: 'Work through power cuts and bad signal', body: 'Everything is saved on your phone first. Keep working offline; your changes go up when the connection returns.' },
       { title: 'Your own measurement fields', body: 'Use the female and male lists, in centimetres or inches, and add your own fields when your work needs them.' },
-      { title: 'Room to grow', body: 'When you take on an apprentice or a helper, invite them with their own sign-in and role on Pro or Business. They work on their own phone, from the same records.' },
+      { title: 'Room to grow', body: 'When you take on an apprentice or a helper, invite them with their own sign-in and role on any paid plan. They work on their own phone, from the same records.' },
     ],
     image: 'phone-15-measurement',
     alt: 'Measurements by body area, compared with the last fitting',
@@ -235,7 +271,7 @@ export const SEGMENTS = {
     lead: 'When more than one person works on a garment, everyone needs to know what stage it is at and who has it next. Threadé gives your atelier one board, one set of records and the right access for each person.',
     card: 'A production board, roles and finance for teams.',
     problems: [
-      { title: 'A production board for every order', body: 'See every open order by stage: cutting, sewing, fitting, ready. Move orders on with one tap and the whole team sees it within seconds. On Pro and Business, assign people to each stage.' },
+      { title: 'A production board for every order', body: 'See every open order by stage: cutting, sewing, fitting, ready. Move orders on with one tap and the whole team sees it within seconds. On any paid plan, assign people to each stage.' },
       { title: 'The right access for each person', body: 'Invite managers, sales team members and an accountant. Each role sees and does only what it should, and you can remove access in one tap.' },
       { title: 'A record of every change', body: 'The change log shows who did what and when, so questions about a price or a payment have a clear answer.' },
       { title: 'Made-to-measure and ready-to-wear together', body: 'Sell ready-made pieces from your store alongside custom orders, with stock levels and low-stock warnings.' },
@@ -297,30 +333,31 @@ export const ABOUT = {
 // true (included), false (not included) or a short text. Limits may change before launch.
 export const PLAN_SECTIONS = [
   { title: 'Team', rows: [
-    { label: 'People', values: { free: '1', pro: '3', business: '10' } },
-    { label: 'Roles', values: { free: 'Admin', pro: 'Admin, Sales', business: 'All roles' } },
-    { label: 'Assign people to stages', values: { free: false, pro: true, business: true } },
+    { label: 'People', values: { free: '1', starter: '3', pro: '6', business: '12' } },
+    { label: 'Roles', values: { free: 'Admin', starter: 'Admin, Sales', pro: 'All roles', business: 'All roles' } },
+    { label: 'Assign people to stages', values: { free: false, starter: true, pro: true, business: true } },
   ] },
   { title: 'Clients and measurements', rows: [
-    { label: 'Clients, orders and payments', values: { free: 'Unlimited', pro: 'Unlimited', business: 'Unlimited' } },
-    { label: 'Your own measurement fields', values: { free: '3', pro: 'Unlimited', business: 'Unlimited' } },
-    { label: 'New measurement categories', values: { free: false, pro: true, business: true } },
-    { label: 'Photos per client', values: { free: '3', pro: '12', business: '12' } },
+    { label: 'Clients, orders and payments', values: { free: 'Unlimited', starter: 'Unlimited', pro: 'Unlimited', business: 'Unlimited' } },
+    { label: 'Your own measurement fields', values: { free: '3', starter: '10', pro: '30', business: '60' } },
+    { label: 'New measurement categories', values: { free: false, starter: false, pro: true, business: true } },
+    { label: 'Photos per client', values: { free: '1', starter: '3', pro: '9', business: '15' } },
   ] },
-  { title: 'Store', rows: [{ label: 'Store items', values: { free: '25', pro: 'Unlimited', business: 'Unlimited' } }] },
+  { title: 'Store', rows: [{ label: 'Store items', values: { free: '15', starter: '30', pro: '45', business: '80' } }] },
   { title: 'Documents', rows: [
-    { label: 'Invoices, receipts and delivery slips', values: { free: true, pro: true, business: true } },
-    { label: 'No "Made with Threadé" line', values: { free: false, pro: true, business: true } },
-    { label: 'Share links to invoices and receipts', values: { free: false, pro: true, business: true } },
+    { label: 'Invoices, receipts and delivery slips', values: { free: true, starter: true, pro: true, business: true } },
+    { label: 'No "Made with Threadé" line', values: { free: false, starter: false, pro: true, business: true } },
+    { label: 'Share links to invoices and receipts', values: { free: false, starter: false, pro: true, business: true } },
   ] },
   { title: 'Money', rows: [
-    { label: 'Finance periods', values: { free: 'This and last month', pro: 'All', business: 'All' } },
-    { label: 'Finance by team member', values: { free: false, pro: false, business: true } },
-    { label: 'CSV and PDF exports', values: { free: false, pro: true, business: true } },
+    { label: 'Finance periods', values: { free: '2 months', starter: '4 months', pro: '11 months', business: '24 months' } },
+    { label: 'Finance by team member', values: { free: false, starter: false, pro: false, business: true } },
+    { label: 'CSV and PDF exports', values: { free: false, starter: false, pro: true, business: true } },
   ] },
   { title: 'Records and help', rows: [
-    { label: 'Change log', values: { free: '30 days', pro: 'Full', business: 'Full' } },
-    { label: 'Support', values: { free: 'FAQ', pro: 'Email', business: 'Priority' } },
+    { label: 'Saved on the server', values: { free: 'Once a day', starter: 'At once', pro: 'At once', business: 'At once' } },
+    { label: 'Change log', values: { free: '30 days', starter: '90 days', pro: '12 months', business: 'Full' } },
+    { label: 'Support', values: { free: 'FAQ', starter: 'Email', pro: 'Email', business: 'Priority' } },
   ] },
 ];
 

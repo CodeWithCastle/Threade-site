@@ -35,12 +35,19 @@ describe('home page', () => {
     expect(tabs[3]).toHaveFocus();
   });
 
-  it('shows the three plans without inventing prices', () => {
+  it('shows the four plans at their published prices, in the currency the visitor picks', async () => {
     render(<App path="/" />);
     PLANS.forEach((p) => expect(screen.getByRole('heading', { name: p.name, level: 3 })).toBeInTheDocument());
-    expect(screen.getAllByText('Price to be announced')).toHaveLength(2);
     const plans = screen.getByRole('region', { name: 'Start free. Grow when you are ready.' });
-    expect(plans).not.toHaveTextContent(/₦\d|£\d|\$\d/);
+    expect(plans).toHaveTextContent('Nothing to pay');
+    expect(plans).toHaveTextContent('$3.99');
+    expect(plans).toHaveTextContent('$14.99');
+    expect(plans).not.toHaveTextContent(/₦\d|£\d/);
+
+    await userEvent.click(within(plans).getByRole('radio', { name: 'Naira (₦)' }));
+    expect(plans).toHaveTextContent('₦1,500');
+    expect(plans).toHaveTextContent('₦12,000');
+    expect(plans).not.toHaveTextContent(/\$\d/);
   });
 
   it('links the official legal documents in the app and the website privacy page', () => {

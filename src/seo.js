@@ -3,6 +3,7 @@
 // Structured data says only what is true today: no ratings, no prices that are not public.
 import { ALL_QUESTIONS, FAQ_SECTIONS, FIT, KEY_FACTS } from './answers';
 import { COUNTRIES_SERVED, FEATURES, PLAN_SECTIONS, PLANS, PLANS_NOTE, SEGMENTS, SITE_URL, SUPPORT_EMAIL, TEAM_EMAIL, WORKFLOW } from './content';
+import { priceNote, priceText, usdPrice } from './pricing';
 import { GUIDES, guideBySlug } from './guides';
 import { PAGES } from './pages';
 
@@ -28,7 +29,8 @@ const organization = () => ({
 
 const website = () => ({ '@type': 'WebSite', '@id': SITE_ID, name: 'Threadé', alternateName: 'Threade', url: `${SITE_URL}/`, publisher: { '@id': ORG_ID }, inLanguage: 'en' });
 
-// The Free plan is the only public price: it costs nothing. Pro and Business are not priced yet.
+// Prices are public from 2026-11. Structured data carries one currency, so it states
+// the dollar price; the page itself shows naira, pounds or dollars by country.
 const application = () => ({
   '@type': 'SoftwareApplication',
   '@id': APP_ID,
@@ -48,7 +50,14 @@ const application = () => ({
   isAccessibleForFree: true,
   softwareHelp: { '@type': 'CreativeWork', url: `${SITE_URL}/faq` },
   publisher: { '@id': ORG_ID },
-  offers: { '@type': 'Offer', name: 'Free plan', price: '0', priceCurrency: 'USD' },
+  offers: PLANS.map((p) => ({
+    '@type': 'Offer',
+    name: `${p.name} plan`,
+    price: usdPrice(p.key),
+    priceCurrency: 'USD',
+    category: p.key === 'free' ? 'Free' : 'Subscription',
+    url: `${SITE_URL}/pricing`,
+  })),
 });
 
 // Each page says what it is, which site it belongs to and that it is about the app.
@@ -175,7 +184,7 @@ export function llmsFullTxt() {
   parts.push(`## How an order moves through Threadé\n\n${WORKFLOW.steps.map((s, i) => `${i + 1}. ${s.title}: ${s.body}`).join('\n')}`);
   parts.push(`## Who it is for\n\n${Object.values(SEGMENTS).map((s) => `### ${s.kicker}\n\n${s.lead}\n\n${s.problems.map((p) => `- ${p.title}: ${p.body}`).join('\n')}\n\nMore: ${url(s.path)}`).join('\n\n')}`);
   const rows = PLAN_SECTIONS.flatMap((sec) => sec.rows.map((r) => `| ${r.label} | ${PLANS.map((p) => valueText(r.values[p.key])).join(' | ')} |`));
-  parts.push(`## Plans and pricing\n\n${PLANS.map((p) => `- ${p.name}: ${p.price}. ${p.for}.`).join('\n')}\n\n${PLANS_NOTE}\n\n| Feature | ${PLANS.map((p) => p.name).join(' | ')} |\n|---|${PLANS.map(() => '---').join('|')}|\n${rows.join('\n')}`);
+  parts.push(`## Plans and pricing\n\n${PLANS.map((p) => `- ${p.name}: ${priceText(p.key, 'USD')} ${priceNote(p.key, 'USD')}. ${p.for}.`).join('\n')}\n\n${PLANS_NOTE}\n\n| Feature | ${PLANS.map((p) => p.name).join(' | ')} |\n|---|${PLANS.map(() => '---').join('|')}|\n${rows.join('\n')}`);
   parts.push(`## Questions and answers\n\n${FAQ_SECTIONS.map((sec) => `### ${sec.title}\n\n${sec.items.map((i) => `Q: ${i.q}\nA: ${i.a}${i.steps ? `\n${i.steps.map((st) => `- ${st}`).join('\n')}` : ''}`).join('\n\n')}`).join('\n\n')}`);
   parts.push(`## Guides\n\n${GUIDES.map((g) => `### ${g.title}\n\n${g.blocks.map((b) => b.h ? `#### ${b.h}` : b.list ? b.list.map((x) => `- ${x}`).join('\n') : b.p).join('\n\n')}\n\n${g.threade.title}: ${g.threade.body}`).join('\n\n')}`);
   return `${parts.join('\n\n')}\n`;

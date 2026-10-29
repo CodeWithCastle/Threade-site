@@ -51,12 +51,15 @@ describe('public pages', () => {
     });
   });
 
-  it('pricing compares every plan and invents no prices', () => {
+  it('pricing compares all four plans and shows the published prices', () => {
     render(<App path="/pricing" />);
     const table = screen.getByRole('table', { name: 'What each plan includes' });
+    expect(PLANS.map((p) => p.key)).toEqual(['free', 'starter', 'pro', 'business']);
     PLANS.forEach((p) => expect(within(table).getByRole('columnheader', { name: p.name })).toBeInTheDocument());
-    expect(within(table).getByRole('row', { name: /People 1 3 10/ })).toBeInTheDocument();
-    expect(screen.getByRole('main')).not.toHaveTextContent(/₦\d|£\d|\$\d|€\d/);
+    expect(within(table).getByRole('row', { name: /People 1 3 6 12/ })).toBeInTheDocument();
+    // Dollars until /api/region answers, which it does not in a test.
+    expect(screen.getByRole('main')).toHaveTextContent('$3.99');
+    expect(screen.getByRole('main')).not.toHaveTextContent(/₦\d|£\d|€\d/);
   });
 
   it('about shows who provides Threadé and how to reach us, without an invented address', () => {

@@ -963,6 +963,49 @@ p {
   margin-bottom: 30px;
 }
 
+/* Currency switcher above the plan cards: the country guess is only a guess. */
+.plans__currency {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 18px auto 0;
+  padding: 5px;
+  border: 1px solid rgba(232, 201, 163, 0.25);
+  border-radius: 999px;
+}
+
+.plans__currency legend {
+  padding: 0 8px;
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+.plans__currency label {
+  padding: 7px 16px;
+  border-radius: 999px;
+  color: var(--text-2);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.plans__currency label.is-on {
+  background: rgba(232, 201, 163, 0.16);
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+.plans__currency input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.plans__currency label:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .plans__every {
   display: flex;
   flex-wrap: wrap;
