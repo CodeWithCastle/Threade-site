@@ -93,7 +93,9 @@ npm run build
 ---
 
 ## Git & Commit Rules
+- **`main` and `development` are permanent.** Never delete either, local or remote, for any reason: they are the record of truth. "Delete the branches" after a merge means the working branch only; if that is at all ambiguous, name the exact branches back to the user and wait.
 - **Branches:** Work only on `development` and `main`.
+- Delete a working branch only once it is fully merged, and only with `git branch -d`, which refuses when work would be lost. Never `-D`.
 - **Commit Author:** `Dan Aremu <danaremut@gmail.com>`. No co-author trailers.
 
 ---
